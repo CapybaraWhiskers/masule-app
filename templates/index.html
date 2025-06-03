@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}トレーニング履歴{% endblock %}
+{% block content %}
+<h1>トレーニング履歴</h1>
+{% if workouts %}
+<table>
+  <tr>
+    <th>日付</th>
+    <th>種目</th>
+    <th>セット</th>
+    <th>回数</th>
+    <th>重量(kg)</th>
+  </tr>
+  {% for w in workouts %}
+  <tr>
+    <td>{{ w.date }}</td>
+    <td>{{ w.exercise }}</td>
+    <td>{{ w.sets }}</td>
+    <td>{{ w.reps }}</td>
+    <td>{{ w.weight }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>まだログがありません。<a href="{{ url_for('log') }}">記録しよう</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}筋トレアプリ{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <nav>
+    <a href="{{ url_for('index') }}">履歴</a> |
+    <a href="{{ url_for('exercises') }}">エクササイズ管理</a> |
+    <a href="{{ url_for('log') }}">ログ記録</a> |
+    <a href="{{ url_for('random_workout') }}">ランダムメニュー</a>
+  </nav>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+
+</html>
