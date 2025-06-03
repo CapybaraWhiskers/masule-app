@@ -2,26 +2,46 @@
 {% block title %}トレーニング履歴{% endblock %}
 {% block content %}
 <h1>トレーニング履歴</h1>
+
 {% if workouts %}
 <table>
   <tr>
     <th>日付</th>
     <th>種目</th>
+    <th>部位</th>
     <th>セット</th>
     <th>回数</th>
     <th>重量(kg)</th>
+    <th>操作</th>
   </tr>
   {% for w in workouts %}
-  <tr>
+  <tr style="background-color:
+      {% if w.muscle_group == '胸' %}#fddede
+      {% elif w.muscle_group == '背中' %}#defdfd
+      {% elif w.muscle_group == '脚' %}#e0f2e9
+      {% elif w.muscle_group == '肩' %}#fdf7de
+      {% elif w.muscle_group == '腕' %}#fce4ec
+      {% elif w.muscle_group == '腹' %}#f0f0f0
+      {% else %}#ffffff
+      {% endif %};
+    ">
     <td>{{ w.date }}</td>
     <td>{{ w.exercise }}</td>
+    <td>{{ w.muscle_group }}</td>
     <td>{{ w.sets }}</td>
     <td>{{ w.reps }}</td>
     <td>{{ w.weight }}</td>
+    <td>
+      <!-- 削除ボタン -->
+      <form method="post" action="{{ url_for('delete_workout', wid=w.id) }}" style="display:inline">
+        <button type="submit" onclick="return confirm('本当にこのログを削除しますか？')">削除</button>
+      </form>
+    </td>
   </tr>
   {% endfor %}
 </table>
 {% else %}
 <p>まだログがありません。<a href="{{ url_for('log') }}">記録しよう</a></p>
 {% endif %}
+
 {% endblock %}
