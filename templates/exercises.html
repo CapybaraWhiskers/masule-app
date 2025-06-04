@@ -3,18 +3,27 @@
 {% block content %}
 <h1>エクササイズ管理</h1>
 
-<ul>
+<table>
+  <tr>
+    <th>番号</th>
+    <th>名前</th>
+    <th>部位</th>
+    <th>操作</th>
+  </tr>
   {% for e in exercises %}
-    <li>
-      {{ e.id }}：{{ e.name }}（{{ e.muscle_group }}）
-      <!-- 削除ボタン -->
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ e.name }}</td>
+    <td>{{ e.muscle_group }}</td>
+    <td>
       <form method="post" style="display:inline">
         <input type="hidden" name="delete_id" value="{{ e.id }}">
         <button type="submit" onclick="return confirm('本当にこの種目を削除しますか？')">削除</button>
       </form>
-    </li>
+    </td>
+  </tr>
   {% endfor %}
-</ul>
+</table>
 
 <h2>新しいエクササイズを追加</h2>
 <form method="post">
