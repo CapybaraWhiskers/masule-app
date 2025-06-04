@@ -2,7 +2,7 @@
 {% block title %}カレンダー{% endblock %}
 {% block content %}
 <h1>{{ year }}年{{ month }}月</h1>
-<table>
+<table class="calendar">
   <tr>
     <th>月</th>
     <th>火</th>
@@ -14,14 +14,19 @@
   </tr>
   {% for week in days %}
   <tr>
-    {% for day in week %}
-    <td {% if day.month != month %}class="other-month"{% endif %}>
-      {{ day.day }}
-      {% for name in events.get(day.strftime('%Y-%m-%d'), []) %}
-      <div>{{ name }}</div>
+      {% for day in week %}
+      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(day.strftime('%Y-%m-%d')) %}has-event{% endif %}">
+        <div class="date-number">{{ day.day }}</div>
+        {% set day_events = events.get(day.strftime('%Y-%m-%d'), []) %}
+        {% if day_events %}
+        <ul class="events">
+          {% for name in day_events %}
+          <li>{{ name }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </td>
       {% endfor %}
-    </td>
-    {% endfor %}
   </tr>
   {% endfor %}
 </table>

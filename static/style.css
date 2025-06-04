@@ -37,3 +37,46 @@ button {
 .other-month {
   background-color: #f0f0f0;
 }
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.calendar th {
+  background-color: #007acc;
+  color: #fff;
+}
+
+.calendar td {
+  height: 80px;
+  vertical-align: top;
+  position: relative;
+}
+
+.calendar td.today {
+  background-color: #fff7e6;
+  border: 2px solid #ff9800;
+}
+
+.calendar td.has-event {
+  background-color: #eaf6ff;
+}
+
+.date-number {
+  font-weight: bold;
+}
+
+.events {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  font-size: 0.75em;
+}
+
+.events li {
+  background-color: #f4f4f4;
+  margin-bottom: 2px;
+  padding: 2px;
+  border-radius: 2px;
+}

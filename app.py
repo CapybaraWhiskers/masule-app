@@ -152,8 +152,9 @@ def calendar_view():
     now = datetime.now()
     cal = calendar.Calendar()
     month_days = cal.monthdatescalendar(now.year, now.month)
+    today = now.date()
     return render_template('calendar.html', events=events, days=month_days,
-                           year=now.year, month=now.month)
+                           year=now.year, month=now.month, today=today)
 
 if __name__ == '__main__':
     app.run(debug=True)
