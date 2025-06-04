@@ -2,6 +2,10 @@
 {% block title %}カレンダー{% endblock %}
 {% block content %}
 <h1>{{ year }}年{{ month }}月</h1>
+<div class="calendar-nav">
+  <a href="{{ url_for('calendar_view', year=prev_year, month=prev_month) }}">&laquo; 前月</a> |
+  <a href="{{ url_for('calendar_view', year=next_year, month=next_month) }}">翌月 &raquo;</a>
+</div>
 <table class="calendar">
   <tr>
     <th>月</th>
@@ -15,9 +19,10 @@
   {% for week in days %}
   <tr>
       {% for day in week %}
-      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(day.strftime('%Y-%m-%d')) %}has-event{% endif %}">
-        <div class="date-number">{{ day.day }}</div>
-        {% set day_events = events.get(day.strftime('%Y-%m-%d'), []) %}
+      {% set date_str = day.strftime('%Y-%m-%d') %}
+      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}">
+        <div class="date-number"><a href="{{ url_for('day_detail', date=date_str) }}" class="day-link">{{ day.day }}</a></div>
+        {% set day_events = events.get(date_str, []) %}
         {% if day_events %}
         <ul class="events">
           {% for name in day_events %}

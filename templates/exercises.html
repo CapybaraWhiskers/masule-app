@@ -2,6 +2,41 @@
 {% block title %}エクササイズ管理{% endblock %}
 {% block content %}
 <h1>エクササイズ管理</h1>
+<h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
+<div id="exerciseForm" style="display:none;">
+  <form method="post">
+    名前：<input type="text" name="name" required>
+    部位：
+    <select name="muscle_group">
+      <option>胸</option>
+      <option>背中</option>
+      <option>脚</option>
+      <option>肩</option>
+      <option>腕</option>
+      <option>腹</option>
+    </select>
+    <button type="submit">追加</button>
+  </form>
+</div>
+
+<form method="get" style="margin-top: 10px;">
+  並び順：
+  <select name="sort">
+    <option value="new" {% if sort == 'new' %}selected{% endif %}>新しい順</option>
+    <option value="old" {% if sort == 'old' %}selected{% endif %}>古い順</option>
+  </select>
+  部位フィルター：
+  <select name="muscle">
+    <option value="" {% if not muscle %}selected{% endif %}>全て</option>
+    <option value="胸" {% if muscle == '胸' %}selected{% endif %}>胸</option>
+    <option value="背中" {% if muscle == '背中' %}selected{% endif %}>背中</option>
+    <option value="脚" {% if muscle == '脚' %}selected{% endif %}>脚</option>
+    <option value="肩" {% if muscle == '肩' %}selected{% endif %}>肩</option>
+    <option value="腕" {% if muscle == '腕' %}selected{% endif %}>腕</option>
+    <option value="腹" {% if muscle == '腹' %}selected{% endif %}>腹</option>
+  </select>
+  <button type="submit">適用</button>
+</form>
 
 <table>
   <tr>
@@ -24,21 +59,4 @@
   </tr>
   {% endfor %}
 </table>
-
-<h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
-<div id="exerciseForm" style="display:none;">
-  <form method="post">
-    名前：<input type="text" name="name" required>
-    部位：
-    <select name="muscle_group">
-      <option>胸</option>
-      <option>背中</option>
-      <option>脚</option>
-      <option>肩</option>
-      <option>腕</option>
-      <option>腹</option>
-    </select>
-    <button type="submit">追加</button>
-  </form>
-</div>
 {% endblock %}

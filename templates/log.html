@@ -2,35 +2,44 @@
 {% block title %}ログ記録{% endblock %}
 {% block content %}
 <h1>トレーニングログを記録</h1>
-<form method="post">
+<form method="post" id="logForm">
   <table>
     <tr>
       <td>日付：</td>
       <td><input type="date" name="date" id="dateInput"></td>
     </tr>
-    <tr>
-      <td>種目：</td>
-      <td>
-        <select name="exercise_id">
-          {% for e in exercises %}
-            <option value="{{ e.id }}">{{ e.name }}（{{ e.muscle_group }}）</option>
-          {% endfor %}
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>セット数：</td>
-      <td><input type="number" name="sets" value="3" required></td>
-    </tr>
-    <tr>
-      <td>回数：</td>
-      <td><input type="number" name="reps" value="10" required></td>
-    </tr>
-    <tr>
-      <td>重量(kg)：</td>
-      <td><input type="number" name="weight" step="2" value="0" required></td>
-    </tr>
   </table>
-  <button type="submit">記録</button>
+
+  <div id="entries">
+    <div class="entry">
+      <table>
+        <tr>
+          <td>種目：</td>
+          <td>
+            <select name="exercise_id">
+              {% for e in exercises %}
+                <option value="{{ e.id }}">{{ e.name }}（{{ e.muscle_group }}）</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>セット数：</td>
+          <td><input type="number" name="sets" value="3" required></td>
+        </tr>
+        <tr>
+          <td>回数：</td>
+          <td><input type="number" name="reps" value="10" required></td>
+        </tr>
+        <tr>
+          <td>重量(kg)：</td>
+          <td><input type="number" name="weight" step="2" value="0" required></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <button type="button" id="addEntry">種目を追加</button>
+  <button type="submit" class="submit-btn">記録</button>
 </form>
 {% endblock %}

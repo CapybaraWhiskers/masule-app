@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{{ date }} のトレーニング{% endblock %}
+{% block content %}
+<h1>{{ date }} のトレーニング</h1>
+{% if workouts %}
+<table>
+  <tr>
+    <th>種目</th>
+    <th>部位</th>
+    <th>セット</th>
+    <th>回数</th>
+    <th>重量(kg)</th>
+  </tr>
+  {% for w in workouts %}
+  <tr>
+    <td>{{ w.name }}</td>
+    <td>{{ w.muscle_group }}</td>
+    <td>{{ w.sets }}</td>
+    <td>{{ w.reps }}</td>
+    <td>{{ w.weight }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>記録がありません。</p>
+{% endif %}
+{% endblock %}
