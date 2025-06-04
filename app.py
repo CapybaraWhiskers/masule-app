@@ -108,25 +108,37 @@ def exercises():
         conn.close()
         return redirect(url_for('exercises'))
 
-    rows = conn.execute('SELECT * FROM exercises').fetchall()
+    sort = request.args.get('sort', 'new')
+    muscle = request.args.get('muscle', '')
+    query = 'SELECT * FROM exercises'
+    params = []
+    if muscle:
+        query += ' WHERE muscle_group = ?'
+        params.append(muscle)
+    if sort == 'old':
+        query += ' ORDER BY id ASC'
+    else:
+        query += ' ORDER BY id DESC'
+
+    rows = conn.execute(query, params).fetchall()
     conn.close()
-    return render_template('exercises.html', exercises=rows)
+    return render_template('exercises.html', exercises=rows, sort=sort, muscle=muscle)
 
 @app.route('/log', methods=['GET', 'POST'])
 def log():
     conn = get_db_connection()
     if request.method == 'POST':
-        # トレーニングログ登録
-        exercise_id = int(request.form['exercise_id'])
+        # トレーニングログ登録（複数行対応）
         date = request.form['date'] or datetime.now().strftime('%Y-%m-%d')
-        sets = int(request.form['sets'])
-        reps = int(request.form['reps'])
-        # 重量は2kg刻みにしているので int にする
-        weight = int(request.form['weight'])
-        conn.execute(
-            'INSERT INTO workouts (exercise_id, date, sets, reps, weight) VALUES (?, ?, ?, ?, ?)',
-            (exercise_id, date, sets, reps, weight)
-        )
+        exercise_ids = request.form.getlist('exercise_id')
+        sets_list = request.form.getlist('sets')
+        reps_list = request.form.getlist('reps')
+        weight_list = request.form.getlist('weight')
+        for ex, st, rp, wt in zip(exercise_ids, sets_list, reps_list, weight_list):
+            conn.execute(
+                'INSERT INTO workouts (exercise_id, date, sets, reps, weight) VALUES (?, ?, ?, ?, ?)',
+                (int(ex), date, int(st), int(rp), int(wt))
+            )
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
@@ -140,21 +152,58 @@ def log():
 def calendar_view():
     conn = get_db_connection()
     rows = conn.execute('''
-        SELECT w.date, e.name
+        SELECT w.date, e.muscle_group
         FROM workouts w
         JOIN exercises e ON w.exercise_id = e.id
     ''').fetchall()
     conn.close()
     events = {}
     for r in rows:
-        events.setdefault(r['date'], []).append(r['name'])
+        day_events = events.setdefault(r['date'], set())
+        day_events.add(r['muscle_group'])
 
-    now = datetime.now()
+    year = request.args.get('year', type=int)
+    month = request.args.get('month', type=int)
+    if not year or not month:
+        now = datetime.now()
+        year = now.year
+        month = now.month
     cal = calendar.Calendar()
-    month_days = cal.monthdatescalendar(now.year, now.month)
-    today = now.date()
+    month_days = cal.monthdatescalendar(year, month)
+    today = datetime.now().date()
+
+    # previous and next month calculations
+    if month == 1:
+        prev_month = 12
+        prev_year = year - 1
+    else:
+        prev_month = month - 1
+        prev_year = year
+    if month == 12:
+        next_month = 1
+        next_year = year + 1
+    else:
+        next_month = month + 1
+        next_year = year
+
     return render_template('calendar.html', events=events, days=month_days,
-                           year=now.year, month=now.month, today=today)
+                           year=year, month=month, today=today,
+                           prev_year=prev_year, prev_month=prev_month,
+                           next_year=next_year, next_month=next_month)
+
+
+@app.route('/day/<date>')
+def day_detail(date):
+    conn = get_db_connection()
+    rows = conn.execute('''
+        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
+        FROM workouts w
+        JOIN exercises e ON w.exercise_id = e.id
+        WHERE w.date = ?
+        ORDER BY w.id ASC
+    ''', (date,)).fetchall()
+    conn.close()
+    return render_template('day_detail.html', workouts=rows, date=date)
 
 if __name__ == '__main__':
     app.run(debug=True)

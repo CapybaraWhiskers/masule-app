@@ -33,4 +33,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  // Add new log entry
+  var addEntryBtn = document.getElementById('addEntry');
+  var entriesDiv = document.getElementById('entries');
+  if (addEntryBtn && entriesDiv) {
+    addEntryBtn.addEventListener('click', function() {
+      var first = entriesDiv.querySelector('.entry');
+      if (first) {
+        var clone = first.cloneNode(true);
+        clone.querySelectorAll('input').forEach(function(inp) { inp.value = inp.defaultValue; });
+        clone.querySelectorAll('select').forEach(function(sel) { sel.selectedIndex = 0; });
+        entriesDiv.appendChild(clone);
+      }
+    });
+  }
 });
