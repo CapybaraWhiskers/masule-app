@@ -14,6 +14,12 @@
   </nav>
   <hr>
   {% block content %}{% endblock %}
+  <div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

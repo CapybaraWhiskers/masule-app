@@ -8,20 +8,20 @@
 </div>
 <table class="calendar">
   <tr>
+    <th>日</th>
     <th>月</th>
     <th>火</th>
     <th>水</th>
     <th>木</th>
     <th>金</th>
     <th>土</th>
-    <th>日</th>
   </tr>
   {% for week in days %}
   <tr>
       {% for day in week %}
       {% set date_str = day.strftime('%Y-%m-%d') %}
-      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}">
-        <div class="date-number"><a href="{{ url_for('day_detail', date=date_str) }}" class="day-link">{{ day.day }}</a></div>
+      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}" data-date="{{ date_str }}">
+        <div class="date-number"><a href="#" class="day-link">{{ day.day }}</a></div>
         {% set day_events = events.get(date_str, []) %}
         {% if day_events %}
         <ul class="events">
