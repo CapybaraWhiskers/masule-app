@@ -3,16 +3,34 @@
 {% block content %}
 <h1>トレーニングログを記録</h1>
 <form method="post">
-  日付：<input type="date" name="date"><br><br>
-  種目：
-  <select name="exercise_id">
-    {% for e in exercises %}
-      <option value="{{ e.id }}">{{ e.name }}（{{ e.muscle_group }}）</option>
-    {% endfor %}
-  </select><br><br>
-  セット数：<input type="number" name="sets" value="3" required><br><br>
-  回数：<input type="number" name="reps" value="10" required><br><br>
-  重量(kg)：<input type="number" name="weight" step="2" value="0" required><br><br>
+  <table>
+    <tr>
+      <td>日付：</td>
+      <td><input type="date" name="date"></td>
+    </tr>
+    <tr>
+      <td>種目：</td>
+      <td>
+        <select name="exercise_id">
+          {% for e in exercises %}
+            <option value="{{ e.id }}">{{ e.name }}（{{ e.muscle_group }}）</option>
+          {% endfor %}
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>セット数：</td>
+      <td><input type="number" name="sets" value="3" required></td>
+    </tr>
+    <tr>
+      <td>回数：</td>
+      <td><input type="number" name="reps" value="10" required></td>
+    </tr>
+    <tr>
+      <td>重量(kg)：</td>
+      <td><input type="number" name="weight" step="2" value="0" required></td>
+    </tr>
+  </table>
   <button type="submit">記録</button>
 </form>
 {% endblock %}

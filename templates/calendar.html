@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}カレンダー{% endblock %}
+{% block content %}
+<h1>{{ year }}年{{ month }}月</h1>
+<table>
+  <tr>
+    <th>月</th>
+    <th>火</th>
+    <th>水</th>
+    <th>木</th>
+    <th>金</th>
+    <th>土</th>
+    <th>日</th>
+  </tr>
+  {% for week in days %}
+  <tr>
+    {% for day in week %}
+    <td {% if day.month != month %}class="other-month"{% endif %}>
+      {{ day.day }}
+      {% for name in events.get(day.strftime('%Y-%m-%d'), []) %}
+      <div>{{ name }}</div>
+      {% endfor %}
+    </td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

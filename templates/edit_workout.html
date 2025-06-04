@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}ログ編集{% endblock %}
+{% block content %}
+<h1>ログを編集</h1>
+<form method="post">
+  <table>
+    <tr>
+      <td>日付：</td>
+      <td><input type="date" name="date" value="{{ workout.date }}"></td>
+    </tr>
+    <tr>
+      <td>種目：</td>
+      <td>
+        <select name="exercise_id">
+          {% for e in exercises %}
+            <option value="{{ e.id }}" {% if e.id == workout.exercise_id %}selected{% endif %}>{{ e.name }}（{{ e.muscle_group }}）</option>
+          {% endfor %}
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>セット数：</td>
+      <td><input type="number" name="sets" value="{{ workout.sets }}" required></td>
+    </tr>
+    <tr>
+      <td>回数：</td>
+      <td><input type="number" name="reps" value="{{ workout.reps }}" required></td>
+    </tr>
+    <tr>
+      <td>重量(kg)：</td>
+      <td><input type="number" name="weight" step="2" value="{{ workout.weight }}" required></td>
+    </tr>
+  </table>
+  <button type="submit">更新</button>
+</form>
+{% endblock %}

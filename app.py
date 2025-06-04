@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template
 import sqlite3
 from datetime import datetime
+import calendar
 import os
 
 app = Flask(__name__)
@@ -52,6 +53,28 @@ def index():
     ''').fetchall()
     conn.close()
     return render_template('index.html', workouts=workouts)
+
+@app.route('/edit_workout/<int:wid>', methods=['GET', 'POST'])
+def edit_workout(wid):
+    conn = get_db_connection()
+    if request.method == 'POST':
+        exercise_id = int(request.form['exercise_id'])
+        date = request.form['date']
+        sets = int(request.form['sets'])
+        reps = int(request.form['reps'])
+        weight = int(request.form['weight'])
+        conn.execute(
+            'UPDATE workouts SET exercise_id=?, date=?, sets=?, reps=?, weight=? WHERE id=?',
+            (exercise_id, date, sets, reps, weight, wid)
+        )
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+
+    workout = conn.execute('SELECT * FROM workouts WHERE id = ?', (wid,)).fetchone()
+    exercises = conn.execute('SELECT * FROM exercises').fetchall()
+    conn.close()
+    return render_template('edit_workout.html', workout=workout, exercises=exercises)
 
 @app.route('/delete_workout/<int:wid>', methods=['POST'])
 def delete_workout(wid):
@@ -112,6 +135,25 @@ def log():
     exercises = conn.execute('SELECT * FROM exercises').fetchall()
     conn.close()
     return render_template('log.html', exercises=exercises)
+
+@app.route('/calendar')
+def calendar_view():
+    conn = get_db_connection()
+    rows = conn.execute('''
+        SELECT w.date, e.name
+        FROM workouts w
+        JOIN exercises e ON w.exercise_id = e.id
+    ''').fetchall()
+    conn.close()
+    events = {}
+    for r in rows:
+        events.setdefault(r['date'], []).append(r['name'])
+
+    now = datetime.now()
+    cal = calendar.Calendar()
+    month_days = cal.monthdatescalendar(now.year, now.month)
+    return render_template('calendar.html', events=events, days=month_days,
+                           year=now.year, month=now.month)
 
 if __name__ == '__main__':
     app.run(debug=True)
