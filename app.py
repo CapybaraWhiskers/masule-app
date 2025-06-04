@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template
 import sqlite3
 from datetime import datetime
 import calendar
+from flask import jsonify
 import os
 
 app = Flask(__name__)
@@ -20,9 +21,15 @@ def init_db():
         CREATE TABLE IF NOT EXISTS exercises (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            muscle_group TEXT NOT NULL
+            muscle_group TEXT NOT NULL,
+            note TEXT
         )
     ''')
+    # 既存DBにnote列が無ければ追加
+    try:
+        cur.execute('ALTER TABLE exercises ADD COLUMN note TEXT')
+    except sqlite3.OperationalError:
+        pass
     # workouts テーブル
     cur.execute('''
         CREATE TABLE IF NOT EXISTS workouts (
@@ -84,6 +91,23 @@ def delete_workout(wid):
     conn.close()
     return redirect(url_for('index'))
 
+@app.route('/edit_exercise/<int:eid>', methods=['GET', 'POST'])
+def edit_exercise(eid):
+    conn = get_db_connection()
+    if request.method == 'POST':
+        name = request.form['name'].strip()
+        muscle = request.form['muscle_group']
+        note = request.form.get('note', '').strip()
+        conn.execute('UPDATE exercises SET name=?, muscle_group=?, note=? WHERE id=?',
+                     (name, muscle, note, eid))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('exercises'))
+
+    exercise = conn.execute('SELECT * FROM exercises WHERE id=?', (eid,)).fetchone()
+    conn.close()
+    return render_template('edit_exercise.html', exercise=exercise)
+
 @app.route('/exercises', methods=['GET', 'POST'])
 def exercises():
     conn = get_db_connection()
@@ -99,10 +123,11 @@ def exercises():
         # 新規エクササイズ追加
         name = request.form['name'].strip()
         muscle = request.form['muscle_group']
+        note = request.form.get('note', '').strip()
         if name:
             conn.execute(
-                'INSERT INTO exercises (name, muscle_group) VALUES (?, ?)',
-                (name, muscle)
+                'INSERT INTO exercises (name, muscle_group, note) VALUES (?, ?, ?)',
+                (name, muscle, note)
             )
             conn.commit()
         conn.close()
@@ -121,8 +146,11 @@ def exercises():
         query += ' ORDER BY id DESC'
 
     rows = conn.execute(query, params).fetchall()
+    # 番号付け用に全エクササイズを古い順で取得
+    all_rows = conn.execute('SELECT id FROM exercises ORDER BY id ASC').fetchall()
+    number_map = {r['id']: idx + 1 for idx, r in enumerate(all_rows)}
     conn.close()
-    return render_template('exercises.html', exercises=rows, sort=sort, muscle=muscle)
+    return render_template('exercises.html', exercises=rows, sort=sort, muscle=muscle, numbers=number_map)
 
 @app.route('/log', methods=['GET', 'POST'])
 def log():
@@ -168,7 +196,7 @@ def calendar_view():
         now = datetime.now()
         year = now.year
         month = now.month
-    cal = calendar.Calendar()
+    cal = calendar.Calendar(firstweekday=6)
     month_days = cal.monthdatescalendar(year, month)
     today = datetime.now().date()
 
@@ -191,6 +219,19 @@ def calendar_view():
                            prev_year=prev_year, prev_month=prev_month,
                            next_year=next_year, next_month=next_month)
 
+
+@app.route('/day_data/<date>')
+def day_data(date):
+    conn = get_db_connection()
+    rows = conn.execute('''
+        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
+        FROM workouts w
+        JOIN exercises e ON w.exercise_id = e.id
+        WHERE w.date = ?
+        ORDER BY w.id ASC
+    ''', (date,)).fetchall()
+    conn.close()
+    return jsonify([dict(r) for r in rows])
 
 @app.route('/day/<date>')
 def day_detail(date):

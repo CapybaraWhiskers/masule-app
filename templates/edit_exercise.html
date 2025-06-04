@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}エクササイズ編集{% endblock %}
+{% block content %}
+<h1>エクササイズを編集</h1>
+<form method="post">
+  <table>
+    <tr>
+      <td>名前：</td>
+      <td><input type="text" name="name" value="{{ exercise.name }}" required></td>
+    </tr>
+    <tr>
+      <td>部位：</td>
+      <td>
+        <select name="muscle_group">
+          <option value="胸" {% if exercise.muscle_group == '胸' %}selected{% endif %}>胸</option>
+          <option value="背中" {% if exercise.muscle_group == '背中' %}selected{% endif %}>背中</option>
+          <option value="脚" {% if exercise.muscle_group == '脚' %}selected{% endif %}>脚</option>
+          <option value="肩" {% if exercise.muscle_group == '肩' %}selected{% endif %}>肩</option>
+          <option value="腕" {% if exercise.muscle_group == '腕' %}selected{% endif %}>腕</option>
+          <option value="腹" {% if exercise.muscle_group == '腹' %}selected{% endif %}>腹</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>備考：</td>
+      <td><input type="text" name="note" value="{{ exercise.note }}"></td>
+    </tr>
+  </table>
+  <button type="submit">更新</button>
+</form>
+{% endblock %}
