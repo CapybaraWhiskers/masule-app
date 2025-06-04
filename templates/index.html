@@ -3,8 +3,19 @@
 {% block content %}
 <h1>トレーニング履歴</h1>
 
+<label for="muscleFilter">部位フィルター:</label>
+<select id="muscleFilter">
+  <option value="">全て</option>
+  <option value="胸">胸</option>
+  <option value="背中">背中</option>
+  <option value="脚">脚</option>
+  <option value="肩">肩</option>
+  <option value="腕">腕</option>
+  <option value="腹">腹</option>
+</select>
+
 {% if workouts %}
-<table>
+<table id="workoutTable">
   <tr>
     <th>日付</th>
     <th>種目</th>
@@ -15,7 +26,7 @@
     <th>操作</th>
   </tr>
   {% for w in workouts %}
-  <tr style="background-color:
+  <tr data-muscle="{{ w.muscle_group }}" style="background-color:
       {% if w.muscle_group == '胸' %}#fddede
       {% elif w.muscle_group == '背中' %}#defdfd
       {% elif w.muscle_group == '脚' %}#e0f2e9
