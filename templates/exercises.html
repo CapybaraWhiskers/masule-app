@@ -25,18 +25,20 @@
   {% endfor %}
 </table>
 
-<h2>新しいエクササイズを追加</h2>
-<form method="post">
-  名前：<input type="text" name="name" required>
-  部位：
-  <select name="muscle_group">
-    <option>胸</option>
-    <option>背中</option>
-    <option>脚</option>
-    <option>肩</option>
-    <option>腕</option>
-    <option>腹</option>
-  </select>
-  <button type="submit">追加</button>
-</form>
+<h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
+<div id="exerciseForm" style="display:none;">
+  <form method="post">
+    名前：<input type="text" name="name" required>
+    部位：
+    <select name="muscle_group">
+      <option>胸</option>
+      <option>背中</option>
+      <option>脚</option>
+      <option>肩</option>
+      <option>腕</option>
+      <option>腹</option>
+    </select>
+    <button type="submit">追加</button>
+  </form>
+</div>
 {% endblock %}
