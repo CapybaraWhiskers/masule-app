@@ -39,18 +39,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // ------- エクササイズ追加フォーム表示切替 -------
-  var toggleFormBtn = document.getElementById('toggleForm');
-  var exerciseForm = document.getElementById('exerciseForm');
-  var cancelAdd = document.getElementById('cancelAdd');
-  if(toggleFormBtn && exerciseForm){
-    toggleFormBtn.addEventListener('click', function(){
-      exerciseForm.style.display = (exerciseForm.style.display === 'block') ? 'none' : 'block';
-    });
-  }
-  if(cancelAdd && exerciseForm){
-    cancelAdd.addEventListener('click', function(){
-      exerciseForm.style.display = 'none';
+  // ------- エクササイズ追加モーダル -------
+  var addExerciseBtn = document.getElementById('openAddExerciseModal');
+  if(addExerciseBtn){
+    addExerciseBtn.addEventListener('click', function(){
+      fetch('/add_exercise_form')
+        .then(r => r.text())
+        .then(function(html){
+          modalBody.innerHTML = html;
+          modal.style.display = 'flex';
+          var form = document.getElementById('addExerciseForm');
+          if(form){
+            form.addEventListener('submit', function(ev){
+              ev.preventDefault();
+              fetch('/exercises', {method:'POST', body:new FormData(form)})
+                .then(function(){ location.reload(); });
+            });
+          }
+        });
     });
   }
 

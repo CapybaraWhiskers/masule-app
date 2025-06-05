@@ -1,0 +1,43 @@
+<h1>エクササイズを追加</h1>
+<form method="post" id="addExerciseForm">
+  <table>
+    <tr>
+      <td>名前：</td>
+      <td><input type="text" name="name" required></td>
+    </tr>
+    <tr>
+      <td>部位：</td>
+      <td>
+        <select name="muscle_group">
+          <option>胸</option>
+          <option>背中</option>
+          <option>脚</option>
+          <option>肩</option>
+          <option>腕</option>
+          <option>腹</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>メモ：</td>
+      <td><input type="text" name="memo"></td>
+    </tr>
+    <tr>
+      <td>動画URL：</td>
+      <td><input type="text" name="video_url"></td>
+    </tr>
+    <tr>
+      <td>セット数デフォルト：</td>
+      <td><input type="number" name="default_sets" min="1"></td>
+    </tr>
+    <tr>
+      <td>回数デフォルト：</td>
+      <td><input type="number" name="default_reps" min="1"></td>
+    </tr>
+    <tr>
+      <td>重量デフォルト(kg)：</td>
+      <td><input type="number" name="default_weight" step="0.1"></td>
+    </tr>
+  </table>
+  <button type="submit">追加</button>
+</form>

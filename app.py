@@ -200,6 +200,11 @@ def edit_exercise_form(eid):
     conn.close()
     return render_template('edit_exercise_form.html', exercise=exercise)
 
+@app.route('/add_exercise_form')
+def add_exercise_form():
+    """エクササイズ追加フォームのみを返す"""
+    return render_template('add_exercise_form.html')
+
 @app.route('/exercises', methods=['GET', 'POST'])
 def exercises():
     """エクササイズ一覧および追加・削除画面"""
