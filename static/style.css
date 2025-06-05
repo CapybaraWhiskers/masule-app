@@ -160,3 +160,26 @@ button {
   cursor: pointer;
   font-size: 1.5em;
 }
+
+/* 筋肉部位ごとの行背景色 */
+.bg-chest {
+  background-color: #fddede;
+}
+.bg-back {
+  background-color: #defdfd;
+}
+.bg-legs {
+  background-color: #e0f2e9;
+}
+.bg-shoulders {
+  background-color: #fdf7de;
+}
+.bg-arms {
+  background-color: #fce4ec;
+}
+.bg-core {
+  background-color: #f0f0f0;
+}
+.bg-default {
+  background-color: #ffffff;
+}
