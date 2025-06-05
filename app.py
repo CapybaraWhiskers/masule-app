@@ -215,7 +215,10 @@ def log():
         return redirect(url_for('index'))
 
     # GET時：エクササイズ一覧をプルダウン表示
-    exercises = conn.execute('SELECT * FROM exercises').fetchall()
+    # 部位(muscle_group)の名前順で並べ替える
+    exercises = conn.execute(
+        'SELECT * FROM exercises ORDER BY muscle_group ASC, name ASC'
+    ).fetchall()
     conn.close()
     return render_template('log.html', exercises=exercises)
 
