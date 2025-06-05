@@ -128,7 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
     el.addEventListener('click', function(e){
       var note = this.dataset.note;
       if(note){
-        modalBody.innerHTML = '<p>'+note+'</p>';
+        var trimmed = note.trim();
+        if(/^https?:\/\//.test(trimmed)){
+          modalBody.innerHTML = '<p><a href="'+trimmed+'" target="_blank" rel="noopener noreferrer">'+trimmed+'</a></p>';
+        }else{
+          modalBody.innerHTML = '<p>'+trimmed+'</p>';
+        }
         modal.style.display = 'flex';
       }
       e.preventDefault();
