@@ -23,7 +23,10 @@ def init_db():
             name TEXT NOT NULL,
             muscle_group TEXT NOT NULL,
             memo TEXT,
-            video_url TEXT
+            video_url TEXT,
+            default_sets INTEGER,
+            default_reps INTEGER,
+            default_weight REAL
         )
     ''')
     # 既存DBに列が無ければ追加
@@ -33,6 +36,18 @@ def init_db():
         pass
     try:
         cur.execute('ALTER TABLE exercises ADD COLUMN video_url TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute('ALTER TABLE exercises ADD COLUMN default_sets INTEGER')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute('ALTER TABLE exercises ADD COLUMN default_reps INTEGER')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute('ALTER TABLE exercises ADD COLUMN default_weight REAL')
     except sqlite3.OperationalError:
         pass
     # workouts テーブル
@@ -74,8 +89,9 @@ def index():
         JOIN exercises e ON w.exercise_id = e.id
         ORDER BY w.date DESC
     ''').fetchall()
+    exercises = conn.execute('SELECT name FROM exercises ORDER BY name ASC').fetchall()
     conn.close()
-    return render_template('index.html', workouts=workouts)
+    return render_template('index.html', workouts=workouts, exercises=exercises)
 
 @app.route('/edit_workout/<int:wid>', methods=['GET', 'POST'])
 def edit_workout(wid):
@@ -127,9 +143,24 @@ def edit_exercise(eid):
         muscle = request.form['muscle_group']
         memo = request.form.get('memo', '').strip()
         video_url = request.form.get('video_url', '').strip()
+        default_sets = request.form.get('default_sets') or None
+        default_reps = request.form.get('default_reps') or None
+        default_weight = request.form.get('default_weight') or None
+        if default_sets is not None and default_sets != '':
+            default_sets = int(default_sets)
+        else:
+            default_sets = None
+        if default_reps is not None and default_reps != '':
+            default_reps = int(default_reps)
+        else:
+            default_reps = None
+        if default_weight is not None and default_weight != '':
+            default_weight = float(default_weight)
+        else:
+            default_weight = None
         conn.execute(
-            'UPDATE exercises SET name=?, muscle_group=?, memo=?, video_url=? WHERE id=?',
-            (name, muscle, memo, video_url, eid)
+            'UPDATE exercises SET name=?, muscle_group=?, memo=?, video_url=?, default_sets=?, default_reps=?, default_weight=? WHERE id=?',
+            (name, muscle, memo, video_url, default_sets, default_reps, default_weight, eid)
         )
         conn.commit()
         conn.close()
@@ -165,10 +196,25 @@ def exercises():
         muscle = request.form['muscle_group']
         memo = request.form.get('memo', '').strip()
         video_url = request.form.get('video_url', '').strip()
+        default_sets = request.form.get('default_sets') or None
+        default_reps = request.form.get('default_reps') or None
+        default_weight = request.form.get('default_weight') or None
+        if default_sets is not None and default_sets != '':
+            default_sets = int(default_sets)
+        else:
+            default_sets = None
+        if default_reps is not None and default_reps != '':
+            default_reps = int(default_reps)
+        else:
+            default_reps = None
+        if default_weight is not None and default_weight != '':
+            default_weight = float(default_weight)
+        else:
+            default_weight = None
         if name:
             conn.execute(
-                'INSERT INTO exercises (name, muscle_group, memo, video_url) VALUES (?, ?, ?, ?)',
-                (name, muscle, memo, video_url)
+                'INSERT INTO exercises (name, muscle_group, memo, video_url, default_sets, default_reps, default_weight) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                (name, muscle, memo, video_url, default_sets, default_reps, default_weight)
             )
             conn.commit()
         conn.close()
@@ -206,9 +252,10 @@ def log():
         intensity_list = request.form.getlist('intensity')
         note_list = request.form.getlist('note')
         for ex, st, rp, wt, it, nt in zip(exercise_ids, sets_list, reps_list, weight_list, intensity_list, note_list):
+            intensity_value = it if it else '心地よい'
             conn.execute(
                 'INSERT INTO workouts (exercise_id, date, sets, reps, weight, intensity, note) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (int(ex), date, int(st), int(rp), float(wt), it, nt.strip())
+                (int(ex), date, int(st), int(rp), float(wt), intensity_value, nt.strip())
             )
         conn.commit()
         conn.close()

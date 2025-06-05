@@ -6,14 +6,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Filter workouts by muscle group
-  var filter = document.getElementById('muscleFilter');
-  if(filter){
-    filter.addEventListener('change', function(){
-      var val = this.value;
-      document.querySelectorAll('#workoutTable tbody tr').forEach(function(row){
-        row.style.display = (!val || row.dataset.muscle === val) ? '' : 'none';
-      });
+  var muscleFilter = document.getElementById('muscleFilter');
+  var exerciseFilter = document.getElementById('exerciseFilter');
+
+  function updateFilters(){
+    var mVal = muscleFilter ? muscleFilter.value : '';
+    var eVal = exerciseFilter ? exerciseFilter.value : '';
+    document.querySelectorAll('#workoutTable tbody tr').forEach(function(row){
+      var okMuscle = !mVal || row.dataset.muscle === mVal;
+      var okEx = !eVal || row.dataset.exercise === eVal;
+      row.style.display = (okMuscle && okEx) ? '' : 'none';
     });
+  }
+
+  if(muscleFilter){
+    muscleFilter.addEventListener('change', updateFilters);
+  }
+  if(exerciseFilter){
+    exerciseFilter.addEventListener('change', updateFilters);
   }
 
   // Toggle new exercise form
@@ -34,20 +44,47 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add new log entry
   var addEntryBtn = document.getElementById('addEntry');
   var entriesDiv = document.getElementById('entries');
+
+  function attachExerciseListener(entry){
+    var select = entry.querySelector('.exercise-select');
+    if(select){
+      select.addEventListener('change', function(){
+        var opt = this.options[this.selectedIndex];
+        var sets = opt.dataset.sets;
+        var reps = opt.dataset.reps;
+        var weight = opt.dataset.weight;
+        if(sets){ entry.querySelector('input[name="sets"]').value = sets; }
+        if(reps){ entry.querySelector('input[name="reps"]').value = reps; }
+        if(weight){ entry.querySelector('input[name="weight"]').value = weight; }
+      });
+    }
+  }
+
   if(addEntryBtn && entriesDiv){
     addEntryBtn.addEventListener('click', function(){
       var first = entriesDiv.querySelector('.entry');
       if(first){
         var clone = first.cloneNode(true);
         clone.querySelectorAll('input').forEach(function(inp){ inp.value = inp.defaultValue; });
-        clone.querySelectorAll('select').forEach(function(sel){ sel.selectedIndex = 0; });
+        clone.querySelectorAll('select').forEach(function(sel){
+          var def = Array.from(sel.options).findIndex(function(o){ return o.defaultSelected; });
+          sel.selectedIndex = def >= 0 ? def : 0;
+        });
         var rm = document.createElement('button');
         rm.type = 'button';
         rm.textContent = '削除';
         rm.className = 'removeEntry';
         clone.appendChild(rm);
         entriesDiv.appendChild(clone);
+        attachExerciseListener(clone);
       }
+    });
+  }
+
+  // attach listener for initial entry
+  if(entriesDiv){
+    entriesDiv.querySelectorAll('.entry').forEach(function(entry){
+      attachExerciseListener(entry);
     });
   }
 

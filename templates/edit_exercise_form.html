@@ -26,6 +26,18 @@
       <td>動画URL：</td>
       <td><input type="url" name="video_url" value="{{ exercise.video_url }}"></td>
     </tr>
+    <tr>
+      <td>セット数デフォルト：</td>
+      <td><input type="number" name="default_sets" value="{{ exercise.default_sets }}" min="1"></td>
+    </tr>
+    <tr>
+      <td>回数デフォルト：</td>
+      <td><input type="number" name="default_reps" value="{{ exercise.default_reps }}" min="1"></td>
+    </tr>
+    <tr>
+      <td>重量デフォルト(kg)：</td>
+      <td><input type="number" name="default_weight" value="{{ exercise.default_weight }}" step="0.1"></td>
+    </tr>
   </table>
   <button type="submit">更新</button>
 </form>
