@@ -13,6 +13,13 @@
   <option value="腕">腕</option>
   <option value="腹">腹</option>
 </select>
+<label for="exerciseFilter">種目フィルター:</label>
+<select id="exerciseFilter">
+  <option value="">全て</option>
+  {% for ex in exercises %}
+    <option value="{{ ex.name }}">{{ ex.name }}</option>
+  {% endfor %}
+</select>
 
 {% if workouts %}
 <table id="workoutTable">
@@ -26,7 +33,7 @@
     <th>操作</th>
   </tr>
   {% for w in workouts %}
-  <tr data-muscle="{{ w.muscle_group }}" style="background-color:
+  <tr data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}" style="background-color:
       {% if w.muscle_group == '胸' %}#fddede
       {% elif w.muscle_group == '背中' %}#defdfd
       {% elif w.muscle_group == '脚' %}#e0f2e9

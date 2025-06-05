@@ -16,9 +16,9 @@
         <tr>
           <td>種目：</td>
           <td>
-            <select name="exercise_id">
+            <select name="exercise_id" class="exercise-select">
               {% for e in exercises %}
-                <option value="{{ e.id }}">{{ e.name }}（{{ e.muscle_group }}）</option>
+                <option value="{{ e.id }}" data-sets="{{ e.default_sets }}" data-reps="{{ e.default_reps }}" data-weight="{{ e.default_weight }}">{{ e.name }}（{{ e.muscle_group }}）</option>
               {% endfor %}
             </select>
           </td>
@@ -40,7 +40,7 @@
           <td>
             <select name="intensity">
               <option value="高い">高い</option>
-              <option value="心地よい">心地よい</option>
+              <option value="心地よい" selected>心地よい</option>
               <option value="低">低</option>
             </select>
           </td>
