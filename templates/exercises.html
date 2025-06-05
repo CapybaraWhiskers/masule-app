@@ -2,6 +2,7 @@
 {% block title %}エクササイズ管理{% endblock %}
 {% block content %}
 <h1>エクササイズ管理</h1>
+<!-- 新しい種目を登録するフォーム -->
 <h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
 <div id="exerciseForm" style="display:none;">
   <form method="post">
@@ -22,6 +23,7 @@
   </form>
 </div>
 
+<!-- 表示の並び替えと部位フィルター -->
 <form method="get" style="margin-top: 10px;">
   並び順：
   <select name="sort">
@@ -41,6 +43,7 @@
   <button type="submit">適用</button>
 </form>
 
+<!-- 登録済みのエクササイズ一覧 -->
 <table>
   <tr>
     <th>番号</th>

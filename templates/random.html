@@ -2,6 +2,7 @@
 {% block title %}ランダムメニュー{% endblock %}
 {% block content %}
 <h1>本日のランダムメニュー</h1>
+<!-- 登録された種目からランダムに表示 -->
 {% if workout %}
 <ol>
   {% for w in workout %}

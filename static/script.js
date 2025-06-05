@@ -1,11 +1,12 @@
+// ページ読み込み後に各種処理を設定
 document.addEventListener('DOMContentLoaded', function() {
-  // Auto-fill today's date on log page
+  // ログ入力ページの日付を自動で本日にする
   var dateInput = document.getElementById('dateInput');
   if (dateInput && !dateInput.value) {
     dateInput.value = new Date().toISOString().slice(0,10);
   }
 
-  // Filter workouts by muscle group
+  // 部位フィルターによる表示切り替え
   var filter = document.getElementById('muscleFilter');
   if(filter){
     filter.addEventListener('change', function(){
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Toggle new exercise form
+  // 新しいエクササイズ入力フォームの表示切替
   var toggleFormBtn = document.getElementById('toggleForm');
   var exerciseForm = document.getElementById('exerciseForm');
   var cancelAdd = document.getElementById('cancelAdd');
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Add new log entry
+  // 種目入力欄をもう一行追加
   var addEntryBtn = document.getElementById('addEntry');
   var entriesDiv = document.getElementById('entries');
   if(addEntryBtn && entriesDiv){
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // allow manual weight input
+  // 重量欄の手入力を許可
   var logForm = document.getElementById('logForm');
   if(logForm){
     logForm.addEventListener('submit', function(){
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // modal handling
+  // モーダルの表示・非表示を制御
   var modal = document.getElementById('modal');
   var modalBody = document.getElementById('modalBody');
   if(modal){
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // calendar popup
+  // カレンダーの日付をクリックしたときのポップアップ
   document.querySelectorAll('.calendar td[data-date]').forEach(function(td){
     td.addEventListener('click', function(){
       var date = this.dataset.date;
@@ -103,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // edit workout popup
+  // 編集ボタンを押したときのワークアウト編集モーダル
   document.querySelectorAll('.edit-workout').forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // exercise memo popup
+  // 種目名クリックでメモを表示
   document.querySelectorAll('.exercise-note').forEach(function(el){
     el.addEventListener('click', function(e){
       var memo = this.dataset.memo;
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // edit exercise popup
+  // エクササイズ編集モーダル
   document.querySelectorAll('.edit-exercise').forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
@@ -164,3 +165,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+// ここまでJavaScriptの処理
