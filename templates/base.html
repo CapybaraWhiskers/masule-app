@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}筋トレアプリ{% endblock %}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -13,9 +12,7 @@
     <a href="{{ url_for('exercises') }}">エクササイズ管理</a> |
     <a href="{{ url_for('log') }}">ログ記録</a>
   </nav>
-  <header>
-    <h1>Let's Get Stronger!</h1>
-  </header>
+  <hr>
   {% block content %}{% endblock %}
   <div id="modal" class="modal" style="display:none;">
     <div class="modal-content">

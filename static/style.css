@@ -1,85 +1,49 @@
 body {
-  font-family: 'Montserrat', sans-serif;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 20px auto;
   line-height: 1.6;
-  background: linear-gradient(to bottom right, #2b3a67, #1d1f27);
-  color: #f5f5f5;
-  min-height: 100vh;
-}
-
-nav {
-  display: flex;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 nav a {
-  margin: 0 12px;
+  margin: 0 8px;
   text-decoration: none;
-  color: #f5f5f5;
-  font-weight: 600;
-}
-
-nav a:hover {
-  color: #ffcc00;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 20px;
+  color: #007acc;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 th,
 td {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-th {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffcc00;
 }
 
 h1,
 h2 {
-  color: #ffcc00;
-  margin-top: 0;
+  color: #333;
 }
 
 button {
   padding: 6px 12px;
   cursor: pointer;
-  background-color: #ffcc00;
-  color: #1d1f27;
-  border: none;
-  border-radius: 4px;
 }
 
 .button-link {
   padding: 6px 12px;
-  background-color: #ffcc00;
-  color: #1d1f27;
+  background-color: #007acc;
+  color: #fff;
   text-decoration: none;
   border-radius: 4px;
-  font-weight: 600;
 }
 
 .other-month {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #f0f0f0;
 }
 .calendar {
   width: 100%;
@@ -88,8 +52,8 @@ button {
 }
 
 .calendar th {
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #ffcc00;
+  background-color: #007acc;
+  color: #fff;
 }
 
 .calendar td {
@@ -97,21 +61,19 @@ button {
   vertical-align: top;
   position: relative;
   width: 14.28%;
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .calendar td.today {
-  background-color: rgba(255, 204, 0, 0.2);
-  border: 2px solid #ffcc00;
+  background-color: #fff7e6;
+  border: 2px solid #ff9800;
 }
 
 .calendar td.has-event {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: #eaf6ff;
 }
 
 .date-number {
   font-weight: bold;
-  color: #ffcc00;
 }
 
 .events {
@@ -122,7 +84,7 @@ button {
 }
 
 .events li {
-  background-color: rgba(0,0,0,0.3);
+  background-color: #f4f4f4;
   margin-bottom: 2px;
   padding: 2px;
   border-radius: 2px;
@@ -137,7 +99,7 @@ button {
 .calendar-nav a {
   margin: 0 10px;
   text-decoration: none;
-  color: #ffcc00;
+  color: #007acc;
 }
 
 .day-link {
@@ -154,12 +116,11 @@ button {
   margin: 16px auto;
   padding: 10px 20px;
   font-size: 1.2em;
-  background-color: #ffcc00;
-  color: #1d1f27;
+  background-color: #007acc;
+  color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 700;
 }
 
 .modal {
@@ -175,17 +136,15 @@ button {
 }
 
 .modal-content {
-  background: #1d1f27;
+  background: #fff;
   padding: 20px;
   border-radius: 4px;
   max-width: 400px;
   width: 90%;
-  color: #f5f5f5;
 }
 
 .close {
   float: right;
   cursor: pointer;
   font-size: 1.5em;
-  color: #ffcc00;
 }
