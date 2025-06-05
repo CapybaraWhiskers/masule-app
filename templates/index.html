@@ -2,6 +2,7 @@
 {% block title %}トレーニング履歴{% endblock %}
 {% block content %}
 <h1>トレーニング履歴</h1>
+<!-- 部位ごとの絞り込みプルダウン -->
 
 <label for="muscleFilter">部位フィルター:</label>
 <select id="muscleFilter">
@@ -15,6 +16,7 @@
 </select>
 
 {% if workouts %}
+<!-- ログがある場合はテーブルで表示 -->
 <table id="workoutTable">
   <tr>
     <th>日付</th>
@@ -52,6 +54,7 @@
   {% endfor %}
 </table>
 {% else %}
+<!-- ログが無い場合のメッセージ -->
 <p>まだログがありません。<a href="{{ url_for('log') }}">記録しよう</a></p>
 {% endif %}
 

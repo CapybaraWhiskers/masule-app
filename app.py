@@ -5,15 +5,19 @@ import calendar
 from flask import jsonify
 import os
 
+# Flaskを使ったシンプルな筋トレ記録アプリ
+
 app = Flask(__name__)
 DB_PATH = os.path.join(os.path.dirname(__file__), 'train.db')
 
 def get_db_connection():
+    """SQLiteデータベースへ接続してConnectionを返す"""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
+    """テーブルが無ければ作成する初期化処理"""
     conn = get_db_connection()
     cur = conn.cursor()
     # exercises テーブル
@@ -66,6 +70,7 @@ init_db()
 
 @app.route('/')
 def index():
+    """トップページ：最近のトレーニング履歴を表示"""
     conn = get_db_connection()
     # muscle_group も取得して行の色分けに使う
     workouts = conn.execute('''
@@ -79,6 +84,7 @@ def index():
 
 @app.route('/edit_workout/<int:wid>', methods=['GET', 'POST'])
 def edit_workout(wid):
+    """既存のワークアウトを編集する"""
     conn = get_db_connection()
     if request.method == 'POST':
         exercise_id = int(request.form['exercise_id'])
@@ -105,6 +111,7 @@ def edit_workout(wid):
 
 @app.route('/edit_workout_form/<int:wid>')
 def edit_workout_form(wid):
+    """モーダル表示用の編集フォームを返す"""
     conn = get_db_connection()
     workout = conn.execute('SELECT * FROM workouts WHERE id = ?', (wid,)).fetchone()
     exercises = conn.execute('SELECT * FROM exercises').fetchall()
@@ -113,6 +120,7 @@ def edit_workout_form(wid):
 
 @app.route('/delete_workout/<int:wid>', methods=['POST'])
 def delete_workout(wid):
+    """指定したワークアウトを削除する"""
     conn = get_db_connection()
     conn.execute('DELETE FROM workouts WHERE id = ?', (wid,))
     conn.commit()
@@ -121,6 +129,7 @@ def delete_workout(wid):
 
 @app.route('/edit_exercise/<int:eid>', methods=['GET', 'POST'])
 def edit_exercise(eid):
+    """エクササイズの情報を編集する"""
     conn = get_db_connection()
     if request.method == 'POST':
         name = request.form['name'].strip()
@@ -143,6 +152,7 @@ def edit_exercise(eid):
 
 @app.route('/edit_exercise_form/<int:eid>')
 def edit_exercise_form(eid):
+    """モーダル用にエクササイズ編集フォームを返す"""
     conn = get_db_connection()
     exercise = conn.execute('SELECT * FROM exercises WHERE id=?', (eid,)).fetchone()
     conn.close()
@@ -150,6 +160,7 @@ def edit_exercise_form(eid):
 
 @app.route('/exercises', methods=['GET', 'POST'])
 def exercises():
+    """エクササイズ一覧の表示と追加・削除処理"""
     conn = get_db_connection()
     if request.method == 'POST':
         # 新規登録 or 削除判定
@@ -195,6 +206,7 @@ def exercises():
 
 @app.route('/log', methods=['GET', 'POST'])
 def log():
+    """トレーニング内容を登録するフォーム"""
     conn = get_db_connection()
     if request.method == 'POST':
         # トレーニングログ登録（複数行対応）
@@ -224,6 +236,7 @@ def log():
 
 @app.route('/calendar')
 def calendar_view():
+    """カレンダー表示ページ"""
     conn = get_db_connection()
     rows = conn.execute('''
         SELECT w.date, e.muscle_group
@@ -268,6 +281,7 @@ def calendar_view():
 
 @app.route('/day_data/<date>')
 def day_data(date):
+    """指定日のワークアウトデータをJSONで返す"""
     conn = get_db_connection()
     rows = conn.execute('''
         SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
@@ -281,6 +295,7 @@ def day_data(date):
 
 @app.route('/day/<date>')
 def day_detail(date):
+    """日別の詳細ページを表示"""
     conn = get_db_connection()
     rows = conn.execute('''
         SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
@@ -293,4 +308,5 @@ def day_detail(date):
     return render_template('day_detail.html', workouts=rows, date=date)
 
 if __name__ == '__main__':
+    # 開発用サーバーの起動
     app.run(debug=True)
