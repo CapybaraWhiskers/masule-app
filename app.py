@@ -269,6 +269,15 @@ def log():
     conn.close()
     return render_template('log.html', exercises=exercises)
 
+@app.route('/log_form')
+def log_form_modal():
+    conn = get_db_connection()
+    exercises = conn.execute(
+        'SELECT * FROM exercises ORDER BY muscle_group ASC, name ASC'
+    ).fetchall()
+    conn.close()
+    return render_template('log_form.html', exercises=exercises)
+
 @app.route('/calendar')
 def calendar_view():
     conn = get_db_connection()

@@ -16,7 +16,7 @@
       <option>腹</option>
     </select>
     メモ：<input type="text" name="memo">
-    動画URL：<input type="url" name="video_url">
+    動画URL：<input type="text" name="video_url">
     セット数デフォルト：<input type="number" name="default_sets" min="1">
     回数デフォルト：<input type="number" name="default_reps" min="1">
     重量デフォルト(kg)：<input type="number" name="default_weight" step="0.1">
@@ -53,8 +53,8 @@
   </tr>
   {% for e in exercises %}
   <tr>
-    <td>{{ numbers[e.id] }}</td>
-    <td><a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ e.name }}</a></td>
+    <td><a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ numbers[e.id] }}</a></td>
+    <td>{{ e.name }}</td>
     <td>{{ e.muscle_group }}</td>
     <td>
       <a href="#" data-id="{{ e.id }}" class="button-link edit-exercise">編集</a>

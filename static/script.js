@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateFilters(){
     var mVal = muscleFilter ? muscleFilter.value : '';
     var eVal = exerciseFilter ? exerciseFilter.value : '';
-    document.querySelectorAll('#workoutTable tbody tr').forEach(function(row){
+    document.querySelectorAll('#workoutTable tbody .data-row').forEach(function(row){
       var okMuscle = !mVal || row.dataset.muscle === mVal;
       var okEx = !eVal || row.dataset.exercise === eVal;
       row.style.display = (okMuscle && okEx) ? '' : 'none';
@@ -25,6 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
   if(exerciseFilter){
     exerciseFilter.addEventListener('change', updateFilters);
   }
+
+  document.querySelectorAll('.exercise-filter-link').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      if(exerciseFilter){
+        exerciseFilter.value = this.textContent.trim();
+        updateFilters();
+      }
+    });
+  });
 
   // Toggle new exercise form
   var toggleFormBtn = document.getElementById('toggleForm');
@@ -101,6 +111,32 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('input[name="weight"]').forEach(function(inp){
         inp.removeAttribute('step');
       });
+    });
+  }
+
+  var logModalBtn = document.getElementById('openLogModal');
+  if(logModalBtn){
+    logModalBtn.addEventListener('click', function(){
+      fetch('/log_form')
+        .then(r => r.text())
+        .then(function(html){
+          modalBody.innerHTML = html;
+          modal.style.display = 'flex';
+          var entry = modalBody.querySelector('.entry');
+          if(entry){ attachExerciseListener(entry); }
+          var form = document.getElementById('logFormModal');
+          if(form){
+            var date = form.querySelector('#dateInputModal');
+            if(date && !date.value){
+              date.value = new Date().toISOString().slice(0,10);
+            }
+            form.addEventListener('submit', function(ev){
+              ev.preventDefault();
+              fetch('/log', {method:'POST', body:new FormData(form)})
+                .then(function(){ location.reload(); });
+            });
+          }
+        });
     });
   }
 
