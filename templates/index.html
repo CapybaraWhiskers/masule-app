@@ -42,16 +42,7 @@
   <tbody>
   {% for w in workouts %}
   <!-- 行の色を部位ごとに変更 -->
-  <tr class="data-row" data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}" style="background-color:
-      {% if w.muscle_group == '胸' %}#fddede
-      {% elif w.muscle_group == '背中' %}#defdfd
-      {% elif w.muscle_group == '脚' %}#e0f2e9
-      {% elif w.muscle_group == '肩' %}#fdf7de
-      {% elif w.muscle_group == '腕' %}#fce4ec
-      {% elif w.muscle_group == '腹' %}#f0f0f0
-      {% else %}#ffffff
-      {% endif %};
-    ">
+  <tr class="data-row {% if w.muscle_group == '胸' %}bg-chest{% elif w.muscle_group == '背中' %}bg-back{% elif w.muscle_group == '脚' %}bg-legs{% elif w.muscle_group == '肩' %}bg-shoulders{% elif w.muscle_group == '腕' %}bg-arms{% elif w.muscle_group == '腹' %}bg-core{% else %}bg-default{% endif %}" data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}">
     <td>{{ w.date_short }}</td>
     <td><a href="#" class="exercise-filter-link">{{ w.exercise }}</a></td>
     <td>{{ w.muscle_group }}</td>
