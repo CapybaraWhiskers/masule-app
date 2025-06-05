@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}筋トレアプリ{% endblock %}</title>
-  <!-- CSS を読み込む -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <!-- 画面上部のナビゲーションメニュー -->
   <nav>
     <a href="{{ url_for('index') }}">履歴</a>
     <a href="{{ url_for('calendar_view') }}">カレンダー</a>
@@ -17,14 +15,12 @@
   <div class="container">
     {% block content %}{% endblock %}
   </div>
-  <!-- ポップアップ表示用のモーダル -->
   <div id="modal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close">&times;</span>
       <div id="modalBody"></div>
     </div>
   </div>
-  <!-- JavaScript を読み込む -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

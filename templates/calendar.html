@@ -2,12 +2,10 @@
 {% block title %}カレンダー{% endblock %}
 {% block content %}
 <h1>{{ year }}年{{ month }}月</h1>
-<!-- 月移動用リンク -->
 <div class="calendar-nav">
   <a href="{{ url_for('calendar_view', year=prev_year, month=prev_month) }}">&laquo; 前月</a> |
   <a href="{{ url_for('calendar_view', year=next_year, month=next_month) }}">翌月 &raquo;</a>
 </div>
-<!-- カレンダー本体 -->
 <table class="calendar">
   <tr>
     <th>日</th>

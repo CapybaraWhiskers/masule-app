@@ -2,7 +2,6 @@
 {% block title %}{{ date }} のトレーニング{% endblock %}
 {% block content %}
 <h1>{{ date }} のトレーニング</h1>
-<!-- 1日の詳細ログ表示 -->
 {% if workouts %}
 <table>
   <tr>
@@ -23,7 +22,6 @@
   {% endfor %}
 </table>
 {% else %}
-<!-- その日の記録が無い場合 -->
 <p>記録がありません。</p>
 {% endif %}
 {% endblock %}
