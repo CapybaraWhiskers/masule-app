@@ -1,32 +1,50 @@
 body {
   font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: 20px auto;
+  background-color: #121212;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
+.container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+nav {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 nav a {
-  margin: 0 8px;
   text-decoration: none;
-  color: #007acc;
+  color: #26a69a;
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
+  background-color: #1e1e1e;
 }
 
 th,
 td {
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   padding: 8px;
   text-align: center;
+  color: #e0e0e0;
 }
 
 h1,
 h2 {
-  color: #333;
+  color: #fff;
 }
 
 button {
@@ -36,14 +54,22 @@ button {
 
 .button-link {
   padding: 6px 12px;
-  background-color: #007acc;
+  background-color: #26a69a;
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
 }
 
+button,
+.submit-btn {
+  background-color: #26a69a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
 .other-month {
-  background-color: #f0f0f0;
+  background-color: #2b2b2b;
 }
 .calendar {
   width: 100%;
@@ -52,7 +78,7 @@ button {
 }
 
 .calendar th {
-  background-color: #007acc;
+  background-color: #009688;
   color: #fff;
 }
 
@@ -61,19 +87,23 @@ button {
   vertical-align: top;
   position: relative;
   width: 14.28%;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: #e0e0e0;
 }
 
 .calendar td.today {
-  background-color: #fff7e6;
-  border: 2px solid #ff9800;
+  background-color: #333;
+  border: 2px solid #26a69a;
 }
 
 .calendar td.has-event {
-  background-color: #eaf6ff;
+  background-color: #2b2b2b;
 }
 
 .date-number {
   font-weight: bold;
+  color: #fff;
 }
 
 .events {
@@ -84,11 +114,12 @@ button {
 }
 
 .events li {
-  background-color: #f4f4f4;
+  background-color: #444;
   margin-bottom: 2px;
   padding: 2px;
   border-radius: 2px;
   white-space: nowrap;
+  color: #e0e0e0;
 }
 
 .calendar-nav {
@@ -99,7 +130,7 @@ button {
 .calendar-nav a {
   margin: 0 10px;
   text-decoration: none;
-  color: #007acc;
+  color: #26a69a;
 }
 
 .day-link {
@@ -116,10 +147,6 @@ button {
   margin: 16px auto;
   padding: 10px 20px;
   font-size: 1.2em;
-  background-color: #007acc;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
   cursor: pointer;
 }
 
@@ -136,7 +163,8 @@ button {
 }
 
 .modal-content {
-  background: #fff;
+  background: #2b2b2b;
+  color: #e0e0e0;
   padding: 20px;
   border-radius: 4px;
   max-width: 400px;
