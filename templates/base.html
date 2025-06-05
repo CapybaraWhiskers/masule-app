@@ -9,7 +9,8 @@
   <nav>
     <a href="{{ url_for('index') }}">履歴</a> |
     <a href="{{ url_for('calendar_view') }}">カレンダー</a> |
-    <a href="{{ url_for('exercises') }}">エクササイズ管理</a>
+    <a href="{{ url_for('exercises') }}">エクササイズ管理</a> |
+    <a href="{{ url_for('log') }}">ログ記録</a>
   </nav>
   <hr>
   {% block content %}{% endblock %}

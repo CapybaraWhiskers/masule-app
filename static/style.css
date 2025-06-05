@@ -148,10 +148,3 @@ button {
   cursor: pointer;
   font-size: 1.5em;
 }
-
-.exercise-name {
-  max-width: 130px;
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
-}
