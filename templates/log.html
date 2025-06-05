@@ -16,7 +16,8 @@
         <tr>
           <td>種目：</td>
           <td>
-            <select name="exercise_id" class="exercise-select">
+            <select name="exercise_id" class="exercise-select" required>
+              <option value="" selected disabled>選択せよ</option>
               {% for e in exercises %}
                 <option value="{{ e.id }}" data-sets="{{ e.default_sets }}" data-reps="{{ e.default_reps }}" data-weight="{{ e.default_weight }}">{{ e.name }}（{{ e.muscle_group }}）</option>
               {% endfor %}
