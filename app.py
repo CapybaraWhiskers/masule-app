@@ -83,25 +83,14 @@ init_db()
 def index():
     conn = get_db_connection()
     # muscle_group も取得して行の色分けに使う
-    rows = conn.execute('''
-        SELECT w.id, w.date, e.name AS exercise, e.muscle_group, w.sets, w.reps,
-               w.weight, w.intensity
+    workouts = conn.execute('''
+        SELECT w.id, w.date, e.name AS exercise, e.muscle_group, w.sets, w.reps, w.weight
         FROM workouts w
         JOIN exercises e ON w.exercise_id = e.id
         ORDER BY w.date DESC
     ''').fetchall()
     exercises = conn.execute('SELECT name FROM exercises ORDER BY name ASC').fetchall()
     conn.close()
-
-    workouts = []
-    for r in rows:
-        item = dict(r)
-        try:
-            item['date_display'] = datetime.strptime(r['date'], '%Y-%m-%d').strftime('%-m/%-d')
-        except Exception:
-            item['date_display'] = r['date']
-        workouts.append(item)
-
     return render_template('index.html', workouts=workouts, exercises=exercises)
 
 @app.route('/edit_workout/<int:wid>', methods=['GET', 'POST'])
@@ -250,26 +239,35 @@ def exercises():
     conn.close()
     return render_template('exercises.html', exercises=rows, sort=sort, muscle=muscle, numbers=number_map)
 
-@app.route('/log', methods=['POST'])
+@app.route('/log', methods=['GET', 'POST'])
 def log():
     conn = get_db_connection()
-    # トレーニングログ登録（複数行対応）
-    date = request.form['date'] or datetime.now().strftime('%Y-%m-%d')
-    exercise_ids = request.form.getlist('exercise_id')
-    sets_list = request.form.getlist('sets')
-    reps_list = request.form.getlist('reps')
-    weight_list = request.form.getlist('weight')
-    intensity_list = request.form.getlist('intensity')
-    note_list = request.form.getlist('note')
-    for ex, st, rp, wt, it, nt in zip(exercise_ids, sets_list, reps_list, weight_list, intensity_list, note_list):
-        intensity_value = it if it else '心地よい'
-        conn.execute(
-            'INSERT INTO workouts (exercise_id, date, sets, reps, weight, intensity, note) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (int(ex), date, int(st), int(rp), float(wt), intensity_value, nt.strip())
-        )
-    conn.commit()
+    if request.method == 'POST':
+        # トレーニングログ登録（複数行対応）
+        date = request.form['date'] or datetime.now().strftime('%Y-%m-%d')
+        exercise_ids = request.form.getlist('exercise_id')
+        sets_list = request.form.getlist('sets')
+        reps_list = request.form.getlist('reps')
+        weight_list = request.form.getlist('weight')
+        intensity_list = request.form.getlist('intensity')
+        note_list = request.form.getlist('note')
+        for ex, st, rp, wt, it, nt in zip(exercise_ids, sets_list, reps_list, weight_list, intensity_list, note_list):
+            intensity_value = it if it else '心地よい'
+            conn.execute(
+                'INSERT INTO workouts (exercise_id, date, sets, reps, weight, intensity, note) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                (int(ex), date, int(st), int(rp), float(wt), intensity_value, nt.strip())
+            )
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+
+    # GET時：エクササイズ一覧をプルダウン表示
+    # 部位(muscle_group)の名前順で並べ替える
+    exercises = conn.execute(
+        'SELECT * FROM exercises ORDER BY muscle_group ASC, name ASC'
+    ).fetchall()
     conn.close()
-    return redirect(url_for('index'))
+    return render_template('log.html', exercises=exercises)
 
 @app.route('/log_form')
 def log_form_modal():

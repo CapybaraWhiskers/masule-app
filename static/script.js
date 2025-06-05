@@ -236,12 +236,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
   });
-
-  // shrink long exercise names
-  document.querySelectorAll('.exercise-name').forEach(function(td){
-    var max = 130;
-    if(td.scrollWidth > max){
-      td.style.fontSize = '0.9em';
-    }
-  });
 });
