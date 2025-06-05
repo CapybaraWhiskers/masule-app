@@ -3,12 +3,14 @@
 {% block content %}
 <h1>本日のランダムメニュー</h1>
 {% if workout %}
+<!-- ランダムに選ばれたメニュー -->
 <ol>
   {% for w in workout %}
   <li>{{ w.name }}（{{ w.muscle_group }}） — {{ w.sets }}セット × {{ w.reps }}回</li>
   {% endfor %}
 </ol>
 {% else %}
+<!-- エクササイズが無い場合の案内 -->
 <p>エクササイズが未登録です。<a href="{{ url_for('exercises') }}">まずは種目を追加</a></p>
 {% endif %}
 {% endblock %}

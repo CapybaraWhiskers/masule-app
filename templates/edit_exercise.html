@@ -2,6 +2,7 @@
 {% block title %}エクササイズ編集{% endblock %}
 {% block content %}
 <h1>エクササイズを編集</h1>
+<!-- エクササイズ編集フォーム -->
 <form method="post">
   <table>
     <tr>
@@ -11,6 +12,7 @@
     <tr>
       <td>部位：</td>
       <td>
+        <!-- どの部位を鍛えるか選択 -->
         <select name="muscle_group">
           <option value="胸" {% if exercise.muscle_group == '胸' %}selected{% endif %}>胸</option>
           <option value="背中" {% if exercise.muscle_group == '背中' %}selected{% endif %}>背中</option>

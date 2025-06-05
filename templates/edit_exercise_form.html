@@ -1,4 +1,5 @@
 <h1>エクササイズを編集</h1>
+<!-- モーダル用エクササイズ編集フォーム -->
 <form method="post" id="editExerciseForm">
   <table>
     <tr>
@@ -8,6 +9,7 @@
     <tr>
       <td>部位：</td>
       <td>
+        <!-- 部位を選択 -->
         <select name="muscle_group">
           <option value="胸" {% if exercise.muscle_group == '胸' %}selected{% endif %}>胸</option>
           <option value="背中" {% if exercise.muscle_group == '背中' %}selected{% endif %}>背中</option>

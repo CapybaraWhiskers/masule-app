@@ -3,6 +3,7 @@
 {% block content %}
 <h1>{{ date }} のトレーニング</h1>
 {% if workouts %}
+<!-- ログがある場合 -->
 <table>
   <tr>
     <th>種目</th>
@@ -22,6 +23,7 @@
   {% endfor %}
 </table>
 {% else %}
+<!-- ログが無い場合 -->
 <p>記録がありません。</p>
 {% endif %}
 {% endblock %}

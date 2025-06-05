@@ -2,6 +2,7 @@
 {% block title %}カレンダー{% endblock %}
 {% block content %}
 <h1>{{ year }}年{{ month }}月</h1>
+<!-- 月移動用リンク -->
 <div class="calendar-nav">
   <a href="{{ url_for('calendar_view', year=prev_year, month=prev_month) }}">&laquo; 前月</a> |
   <a href="{{ url_for('calendar_view', year=next_year, month=next_month) }}">翌月 &raquo;</a>
@@ -17,13 +18,16 @@
     <th>土</th>
   </tr>
   {% for week in days %}
+  <!-- 1週間分の行 -->
   <tr>
       {% for day in week %}
+      <!-- 各日のセル -->
       {% set date_str = day.strftime('%Y-%m-%d') %}
       <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}" data-date="{{ date_str }}">
         <div class="date-number"><a href="#" class="day-link">{{ day.day }}</a></div>
         {% set day_events = events.get(date_str, []) %}
         {% if day_events %}
+        <!-- その日の種目一覧 -->
         <ul class="events">
           {% for name in day_events %}
           <li style="background-color:{% if name == '胸' %}#fddede{% elif name == '背中' %}#defdfd{% elif name == '脚' %}#e0f2e9{% elif name == '肩' %}#fdf7de{% elif name == '腕' %}#fce4ec{% elif name == '腹' %}#f0f0f0{% else %}#ffffff{% endif %};">{{ name }}</li>
