@@ -1,8 +1,5 @@
-{% extends 'base.html' %}
-{% block title %}エクササイズ編集{% endblock %}
-{% block content %}
 <h1>エクササイズを編集</h1>
-<form method="post">
+<form method="post" id="editExerciseForm">
   <table>
     <tr>
       <td>名前：</td>
@@ -32,4 +29,3 @@
   </table>
   <button type="submit">更新</button>
 </form>
-{% endblock %}

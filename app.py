@@ -22,12 +22,17 @@ def init_db():
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             muscle_group TEXT NOT NULL,
-            note TEXT
+            memo TEXT,
+            video_url TEXT
         )
     ''')
-    # 既存DBにnote列が無ければ追加
+    # 既存DBに列が無ければ追加
     try:
-        cur.execute('ALTER TABLE exercises ADD COLUMN note TEXT')
+        cur.execute('ALTER TABLE exercises ADD COLUMN memo TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute('ALTER TABLE exercises ADD COLUMN video_url TEXT')
     except sqlite3.OperationalError:
         pass
     # workouts テーブル
@@ -39,9 +44,20 @@ def init_db():
             sets INTEGER NOT NULL,
             reps INTEGER NOT NULL,
             weight REAL NOT NULL,
+            intensity TEXT,
+            note TEXT,
             FOREIGN KEY(exercise_id) REFERENCES exercises(id)
         )
     ''')
+    # 既存DBに列が無ければ追加
+    try:
+        cur.execute('ALTER TABLE workouts ADD COLUMN intensity TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cur.execute('ALTER TABLE workouts ADD COLUMN note TEXT')
+    except sqlite3.OperationalError:
+        pass
     conn.commit()
     conn.close()
 
@@ -70,12 +86,16 @@ def edit_workout(wid):
         sets = int(request.form['sets'])
         reps = int(request.form['reps'])
         weight = float(request.form['weight'])
+        intensity = request.form.get('intensity', '')
+        note = request.form.get('note', '').strip()
         conn.execute(
-            'UPDATE workouts SET exercise_id=?, date=?, sets=?, reps=?, weight=? WHERE id=?',
-            (exercise_id, date, sets, reps, weight, wid)
+            'UPDATE workouts SET exercise_id=?, date=?, sets=?, reps=?, weight=?, intensity=?, note=? WHERE id=?',
+            (exercise_id, date, sets, reps, weight, intensity, note, wid)
         )
         conn.commit()
         conn.close()
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return ('', 204)
         return redirect(url_for('index'))
 
     workout = conn.execute('SELECT * FROM workouts WHERE id = ?', (wid,)).fetchone()
@@ -105,16 +125,28 @@ def edit_exercise(eid):
     if request.method == 'POST':
         name = request.form['name'].strip()
         muscle = request.form['muscle_group']
-        note = request.form.get('note', '').strip()
-        conn.execute('UPDATE exercises SET name=?, muscle_group=?, note=? WHERE id=?',
-                     (name, muscle, note, eid))
+        memo = request.form.get('memo', '').strip()
+        video_url = request.form.get('video_url', '').strip()
+        conn.execute(
+            'UPDATE exercises SET name=?, muscle_group=?, memo=?, video_url=? WHERE id=?',
+            (name, muscle, memo, video_url, eid)
+        )
         conn.commit()
         conn.close()
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return ('', 204)
         return redirect(url_for('exercises'))
 
     exercise = conn.execute('SELECT * FROM exercises WHERE id=?', (eid,)).fetchone()
     conn.close()
     return render_template('edit_exercise.html', exercise=exercise)
+
+@app.route('/edit_exercise_form/<int:eid>')
+def edit_exercise_form(eid):
+    conn = get_db_connection()
+    exercise = conn.execute('SELECT * FROM exercises WHERE id=?', (eid,)).fetchone()
+    conn.close()
+    return render_template('edit_exercise_form.html', exercise=exercise)
 
 @app.route('/exercises', methods=['GET', 'POST'])
 def exercises():
@@ -131,11 +163,12 @@ def exercises():
         # 新規エクササイズ追加
         name = request.form['name'].strip()
         muscle = request.form['muscle_group']
-        note = request.form.get('note', '').strip()
+        memo = request.form.get('memo', '').strip()
+        video_url = request.form.get('video_url', '').strip()
         if name:
             conn.execute(
-                'INSERT INTO exercises (name, muscle_group, note) VALUES (?, ?, ?)',
-                (name, muscle, note)
+                'INSERT INTO exercises (name, muscle_group, memo, video_url) VALUES (?, ?, ?, ?)',
+                (name, muscle, memo, video_url)
             )
             conn.commit()
         conn.close()
@@ -170,10 +203,12 @@ def log():
         sets_list = request.form.getlist('sets')
         reps_list = request.form.getlist('reps')
         weight_list = request.form.getlist('weight')
-        for ex, st, rp, wt in zip(exercise_ids, sets_list, reps_list, weight_list):
+        intensity_list = request.form.getlist('intensity')
+        note_list = request.form.getlist('note')
+        for ex, st, rp, wt, it, nt in zip(exercise_ids, sets_list, reps_list, weight_list, intensity_list, note_list):
             conn.execute(
-                'INSERT INTO workouts (exercise_id, date, sets, reps, weight) VALUES (?, ?, ?, ?, ?)',
-                (int(ex), date, int(st), int(rp), float(wt))
+                'INSERT INTO workouts (exercise_id, date, sets, reps, weight, intensity, note) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                (int(ex), date, int(st), int(rp), float(wt), it, nt.strip())
             )
         conn.commit()
         conn.close()

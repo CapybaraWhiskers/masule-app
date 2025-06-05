@@ -30,6 +30,20 @@
       <td>重量(kg)：</td>
       <td><input type="number" name="weight" step="0.1" value="{{ workout.weight }}" required></td>
     </tr>
+    <tr>
+      <td>強度：</td>
+      <td>
+        <select name="intensity">
+          <option value="高い" {% if workout.intensity == '高い' %}selected{% endif %}>高い</option>
+          <option value="心地よい" {% if workout.intensity == '心地よい' %}selected{% endif %}>心地よい</option>
+          <option value="低" {% if workout.intensity == '低' %}selected{% endif %}>低</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>備考：</td>
+      <td><input type="text" name="note" value="{{ workout.note }}"></td>
+    </tr>
   </table>
   <button type="submit">更新</button>
 </form>
