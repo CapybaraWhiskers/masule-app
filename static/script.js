@@ -74,6 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
     modal.querySelector('.close').addEventListener('click', function(){
       modal.style.display = 'none';
     });
+    modal.addEventListener('click', function(e){
+      if(e.target === modal){
+        modal.style.display = 'none';
+      }
+    });
   }
 
   // calendar popup
@@ -94,6 +99,26 @@ document.addEventListener('DOMContentLoaded', function() {
             modalBody.innerHTML = '<h3>'+date+'</h3>' + html;
           }
           modal.style.display = 'flex';
+        });
+    });
+  });
+
+  // edit workout popup
+  document.querySelectorAll('.edit-workout').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = this.dataset.id;
+      fetch('/edit_workout_form/' + id)
+        .then(r => r.text())
+        .then(function(html){
+          modalBody.innerHTML = html;
+          modal.style.display = 'flex';
+          var form = document.getElementById('editWorkoutForm');
+          form.addEventListener('submit', function(ev){
+            ev.preventDefault();
+            fetch('/edit_workout/' + id, {method:'POST', body:new FormData(form)})
+              .then(function(){ location.reload(); });
+          });
         });
     });
   });
