@@ -3,6 +3,7 @@
 {% block content %}
 <h1>エクササイズ管理</h1>
 <h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
+<!-- 追加フォームは最初非表示 -->
 <div id="exerciseForm" style="display:none;">
   <form method="post">
     名前：<input type="text" name="name" required>
@@ -52,8 +53,12 @@
     <th>操作</th>
   </tr>
   {% for e in exercises %}
+  <!-- 各エクササイズの行 -->
   <tr>
-    <td><a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ numbers[e.id] }}</a></td>
+    <td>
+      <!-- メモや動画URLをモーダルで表示 -->
+      <a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ numbers[e.id] }}</a>
+    </td>
     <td>{{ e.name }}</td>
     <td>{{ e.muscle_group }}</td>
     <td>

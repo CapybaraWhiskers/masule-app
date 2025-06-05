@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 全ページ共通のテンプレート -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -6,6 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <!-- ナビゲーションメニュー -->
   <nav>
     <a href="{{ url_for('index') }}">履歴</a> |
     <a href="{{ url_for('calendar_view') }}">カレンダー</a> |
@@ -13,12 +15,14 @@
   </nav>
   <hr>
   {% block content %}{% endblock %}
+  <!-- ポップアップ表示用のモーダル -->
   <div id="modal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close">&times;</span>
       <div id="modalBody"></div>
     </div>
   </div>
+  <!-- JavaScript 読み込み -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

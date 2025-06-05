@@ -2,6 +2,7 @@
 {% block title %}ログ編集{% endblock %}
 {% block content %}
 <h1>ログを編集</h1>
+<!-- 編集フォーム -->
 <form method="post" id="editWorkoutForm">
   <table>
     <tr>
@@ -11,6 +12,7 @@
     <tr>
       <td>種目：</td>
       <td>
+        <!-- 種目を選択 -->
         <select name="exercise_id">
           {% for e in exercises %}
             <option value="{{ e.id }}" {% if e.id == workout.exercise_id %}selected{% endif %}>{{ e.name }}（{{ e.muscle_group }}）</option>

@@ -1,3 +1,4 @@
+/* 基本レイアウト設定 */
 body {
   font-family: Arial, sans-serif;
   max-width: 800px;
@@ -5,12 +6,14 @@ body {
   line-height: 1.6;
 }
 
+/* ナビゲーションリンク */
 nav a {
   margin: 0 8px;
   text-decoration: none;
   color: #007acc;
 }
 
+/* テーブルの基本スタイル */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -42,20 +45,24 @@ button {
   border-radius: 4px;
 }
 
+/* 当月以外の日付 */
 .other-month {
   background-color: #f0f0f0;
 }
+/* カレンダー全体 */
 .calendar {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
 }
 
+/* カレンダーのヘッダ */
 .calendar th {
   background-color: #007acc;
   color: #fff;
 }
 
+/* カレンダーの日付セル */
 .calendar td {
   height: 80px;
   vertical-align: top;
@@ -63,11 +70,13 @@ button {
   width: 14.28%;
 }
 
+/* 今日の日付のハイライト */
 .calendar td.today {
   background-color: #fff7e6;
   border: 2px solid #ff9800;
 }
 
+/* ログが存在する日付 */
 .calendar td.has-event {
   background-color: #eaf6ff;
 }
@@ -123,6 +132,7 @@ button {
   cursor: pointer;
 }
 
+/* モーダルの背景 */
 .modal {
   position: fixed;
   left: 0;
@@ -135,6 +145,7 @@ button {
   justify-content: center;
 }
 
+/* モーダル内のコンテンツ */
 .modal-content {
   background: #fff;
   padding: 20px;
@@ -143,6 +154,7 @@ button {
   width: 90%;
 }
 
+/* 閉じるボタン */
 .close {
   float: right;
   cursor: pointer;

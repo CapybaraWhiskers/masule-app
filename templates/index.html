@@ -2,8 +2,10 @@
 {% block title %}トレーニング履歴{% endblock %}
 {% block content %}
 <h1>トレーニング履歴</h1>
+<!-- 記録追加用モーダルを開くボタン -->
 <button type="button" id="openLogModal">記録</button>
 
+<!-- 表示フィルター -->
 <label for="muscleFilter">部位フィルター:</label>
 <select id="muscleFilter">
   <option value="">全て</option>
@@ -23,6 +25,7 @@
 </select>
 
 {% if workouts %}
+<!-- ログがある場合はテーブル表示 -->
 <table id="workoutTable">
   <thead>
     <tr>
@@ -38,6 +41,7 @@
   </thead>
   <tbody>
   {% for w in workouts %}
+  <!-- 行の色を部位ごとに変更 -->
   <tr class="data-row" data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}" style="background-color:
       {% if w.muscle_group == '胸' %}#fddede
       {% elif w.muscle_group == '背中' %}#defdfd
@@ -56,6 +60,7 @@
     <td>{{ w.weight }}</td>
     <td>{{ w.intensity }}</td>
       <td>
+        <!-- 編集ボタンはモーダルでフォームを開く -->
         <a href="#" class="button-link edit-workout" data-id="{{ w.id }}">編集</a>
         <form method="post" action="{{ url_for('delete_workout', wid=w.id) }}" style="display:inline">
           <button type="submit" onclick="return confirm('本当にこのログを削除しますか？')">削除</button>
@@ -66,6 +71,7 @@
 </tbody>
 </table>
 {% else %}
+<!-- ログが無い場合のメッセージ -->
 <p>まだログがありません。記録ボタンから追加しましょう。</p>
 {% endif %}
 

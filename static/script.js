@@ -1,15 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Auto-fill today's date on log page
+  // ------- 日付の自動入力 -------
+  // ログ入力フォームの初期値として本日の日付を設定
   var dateInput = document.getElementById('dateInput');
   if (dateInput && !dateInput.value) {
     dateInput.value = new Date().toISOString().slice(0,10);
   }
 
-  // Filter workouts by muscle group
+  // ------- フィルタ機能 -------
+  // 筋肉部位や種目で絞り込みを行う
   var muscleFilter = document.getElementById('muscleFilter');
   var exerciseFilter = document.getElementById('exerciseFilter');
 
   function updateFilters(){
+    // 選択された条件に合わせて行を表示/非表示
     var mVal = muscleFilter ? muscleFilter.value : '';
     var eVal = exerciseFilter ? exerciseFilter.value : '';
     document.querySelectorAll('#workoutTable tbody .data-row').forEach(function(row){
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Toggle new exercise form
+  // ------- エクササイズ追加フォーム表示切替 -------
   var toggleFormBtn = document.getElementById('toggleForm');
   var exerciseForm = document.getElementById('exerciseForm');
   var cancelAdd = document.getElementById('cancelAdd');
@@ -51,11 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Add new log entry
+  // ------- 行の追加 -------
   var addEntryBtn = document.getElementById('addEntry');
   var entriesDiv = document.getElementById('entries');
 
   function attachExerciseListener(entry){
+    // 種目選択時にデフォルト値を入力する
     var select = entry.querySelector('.exercise-select');
     if(select){
       select.addEventListener('change', function(){
@@ -98,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // 行削除ボタンの処理
   document.addEventListener('click', function(e){
     if(e.target.classList.contains('removeEntry')){
       e.target.parentElement.remove();
@@ -105,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // allow manual weight input
+  // ------- 手動入力用設定 -------
   var logForm = document.getElementById('logForm');
   if(logForm){
     logForm.addEventListener('submit', function(){
@@ -114,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // ------- モーダルでのログ登録 -------
   var logModalBtn = document.getElementById('openLogModal');
   if(logModalBtn){
     logModalBtn.addEventListener('click', function(){
@@ -140,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // modal handling
+  // ------- モーダルの開閉処理 -------
   var modal = document.getElementById('modal');
   var modalBody = document.getElementById('modalBody');
   if(modal){
@@ -154,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // calendar popup
+  // ------- カレンダーの日付クリック -------
   document.querySelectorAll('.calendar td[data-date]').forEach(function(td){
     td.addEventListener('click', function(){
       var date = this.dataset.date;
@@ -176,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // edit workout popup
+  // ------- ログ編集モーダル -------
   document.querySelectorAll('.edit-workout').forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
@@ -196,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // exercise memo popup
+  // ------- エクササイズメモ表示 -------
   document.querySelectorAll('.exercise-note').forEach(function(el){
     el.addEventListener('click', function(e){
       var memo = this.dataset.memo;
@@ -217,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // edit exercise popup
+  // ------- エクササイズ編集モーダル -------
   document.querySelectorAll('.edit-exercise').forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
