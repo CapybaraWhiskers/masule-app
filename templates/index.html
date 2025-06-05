@@ -27,13 +27,13 @@
   </tr>
   {% for w in workouts %}
   <tr data-muscle="{{ w.muscle_group }}" style="background-color:
-      {% if w.muscle_group == '胸' %}#4a3b3b
-      {% elif w.muscle_group == '背中' %}#3b4a4a
-      {% elif w.muscle_group == '脚' %}#3b4a3b
-      {% elif w.muscle_group == '肩' %}#4a4a3b
-      {% elif w.muscle_group == '腕' %}#4a3b4a
-      {% elif w.muscle_group == '腹' %}#3b3b4a
-      {% else %}#2c2c2c
+      {% if w.muscle_group == '胸' %}#fddede
+      {% elif w.muscle_group == '背中' %}#defdfd
+      {% elif w.muscle_group == '脚' %}#e0f2e9
+      {% elif w.muscle_group == '肩' %}#fdf7de
+      {% elif w.muscle_group == '腕' %}#fce4ec
+      {% elif w.muscle_group == '腹' %}#f0f0f0
+      {% else %}#ffffff
       {% endif %};
     ">
     <td>{{ w.date }}</td>
