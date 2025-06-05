@@ -38,7 +38,7 @@ def init_db():
             date TEXT NOT NULL,
             sets INTEGER NOT NULL,
             reps INTEGER NOT NULL,
-            weight INTEGER NOT NULL,
+            weight REAL NOT NULL,
             FOREIGN KEY(exercise_id) REFERENCES exercises(id)
         )
     ''')
@@ -69,7 +69,7 @@ def edit_workout(wid):
         date = request.form['date']
         sets = int(request.form['sets'])
         reps = int(request.form['reps'])
-        weight = int(request.form['weight'])
+        weight = float(request.form['weight'])
         conn.execute(
             'UPDATE workouts SET exercise_id=?, date=?, sets=?, reps=?, weight=? WHERE id=?',
             (exercise_id, date, sets, reps, weight, wid)
@@ -82,6 +82,14 @@ def edit_workout(wid):
     exercises = conn.execute('SELECT * FROM exercises').fetchall()
     conn.close()
     return render_template('edit_workout.html', workout=workout, exercises=exercises)
+
+@app.route('/edit_workout_form/<int:wid>')
+def edit_workout_form(wid):
+    conn = get_db_connection()
+    workout = conn.execute('SELECT * FROM workouts WHERE id = ?', (wid,)).fetchone()
+    exercises = conn.execute('SELECT * FROM exercises').fetchall()
+    conn.close()
+    return render_template('edit_workout_form.html', workout=workout, exercises=exercises)
 
 @app.route('/delete_workout/<int:wid>', methods=['POST'])
 def delete_workout(wid):
@@ -165,7 +173,7 @@ def log():
         for ex, st, rp, wt in zip(exercise_ids, sets_list, reps_list, weight_list):
             conn.execute(
                 'INSERT INTO workouts (exercise_id, date, sets, reps, weight) VALUES (?, ?, ?, ?, ?)',
-                (int(ex), date, int(st), int(rp), int(wt))
+                (int(ex), date, int(st), int(rp), float(wt))
             )
         conn.commit()
         conn.close()
