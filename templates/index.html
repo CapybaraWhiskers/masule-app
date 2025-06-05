@@ -32,6 +32,7 @@
       <th>セット</th>
       <th>回数</th>
       <th>重量(kg)</th>
+      <th>強度</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -47,12 +48,13 @@
       {% else %}#ffffff
       {% endif %};
     ">
-    <td>{{ w.date }}</td>
+    <td>{{ w.date_short }}</td>
     <td><a href="#" class="exercise-filter-link">{{ w.exercise }}</a></td>
     <td>{{ w.muscle_group }}</td>
     <td>{{ w.sets }}</td>
     <td>{{ w.reps }}</td>
     <td>{{ w.weight }}</td>
+    <td>{{ w.intensity }}</td>
       <td>
         <a href="#" class="button-link edit-workout" data-id="{{ w.id }}">編集</a>
         <form method="post" action="{{ url_for('delete_workout', wid=w.id) }}" style="display:inline">
@@ -64,7 +66,7 @@
 </tbody>
 </table>
 {% else %}
-<p>まだログがありません。<a href="{{ url_for('log') }}">記録しよう</a></p>
+<p>まだログがありません。記録ボタンから追加しましょう。</p>
 {% endif %}
 
 {% endblock %}
