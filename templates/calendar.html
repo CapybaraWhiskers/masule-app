@@ -26,7 +26,7 @@
         {% if day_events %}
         <ul class="events">
           {% for name in day_events %}
-          <li style="background-color:{% if name == '胸' %}#4a3b3b{% elif name == '背中' %}#3b4a4a{% elif name == '脚' %}#3b4a3b{% elif name == '肩' %}#4a4a3b{% elif name == '腕' %}#4a3b4a{% elif name == '腹' %}#3b3b4a{% else %}#2c2c2c{% endif %}; color:#e0e0e0;">{{ name }}</li>
+          <li style="background-color:{% if name == '胸' %}#fddede{% elif name == '背中' %}#defdfd{% elif name == '脚' %}#e0f2e9{% elif name == '肩' %}#fdf7de{% elif name == '腕' %}#fce4ec{% elif name == '腹' %}#f0f0f0{% else %}#ffffff{% endif %};">{{ name }}</li>
           {% endfor %}
         </ul>
         {% endif %}

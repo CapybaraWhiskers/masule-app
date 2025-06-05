@@ -7,14 +7,13 @@
 </head>
 <body>
   <nav>
-    <a href="{{ url_for('index') }}">履歴</a>
-    <a href="{{ url_for('calendar_view') }}">カレンダー</a>
-    <a href="{{ url_for('exercises') }}">エクササイズ管理</a>
+    <a href="{{ url_for('index') }}">履歴</a> |
+    <a href="{{ url_for('calendar_view') }}">カレンダー</a> |
+    <a href="{{ url_for('exercises') }}">エクササイズ管理</a> |
     <a href="{{ url_for('log') }}">ログ記録</a>
   </nav>
-  <div class="container">
-    {% block content %}{% endblock %}
-  </div>
+  <hr>
+  {% block content %}{% endblock %}
   <div id="modal" class="modal" style="display:none;">
     <div class="modal-content">
       <span class="close">&times;</span>
