@@ -123,20 +123,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // exercise note popup
+  // exercise memo popup
   document.querySelectorAll('.exercise-note').forEach(function(el){
     el.addEventListener('click', function(e){
-      var note = this.dataset.note;
-      if(note){
-        var trimmed = note.trim();
-        if(/^https?:\/\//.test(trimmed)){
-          modalBody.innerHTML = '<p><a href="'+trimmed+'" target="_blank" rel="noopener noreferrer">'+trimmed+'</a></p>';
-        }else{
-          modalBody.innerHTML = '<p>'+trimmed+'</p>';
-        }
+      var memo = this.dataset.memo;
+      var video = this.dataset.video;
+      var html = '';
+      if(memo){
+        html += '<p>'+memo.trim()+'</p>';
+      }
+      if(video){
+        var trimmed = video.trim();
+        html += '<p><a href="'+trimmed+'" target="_blank" rel="noopener noreferrer">'+trimmed+'</a></p>';
+      }
+      if(html){
+        modalBody.innerHTML = html;
         modal.style.display = 'flex';
       }
       e.preventDefault();
+    });
+  });
+
+  // edit exercise popup
+  document.querySelectorAll('.edit-exercise').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      var id = this.dataset.id;
+      fetch('/edit_exercise_form/' + id)
+        .then(r => r.text())
+        .then(function(html){
+          modalBody.innerHTML = html;
+          modal.style.display = 'flex';
+          var form = document.getElementById('editExerciseForm');
+          form.addEventListener('submit', function(ev){
+            ev.preventDefault();
+            fetch('/edit_exercise/' + id, {method:'POST', body:new FormData(form)})
+              .then(function(){ location.reload(); });
+          });
+        });
     });
   });
 });

@@ -15,7 +15,8 @@
       <option>腕</option>
       <option>腹</option>
     </select>
-    備考：<input type="text" name="note">
+    メモ：<input type="text" name="memo">
+    動画URL：<input type="url" name="video_url">
     <button type="submit">追加</button>
     <button type="button" id="cancelAdd">キャンセル</button>
   </form>
@@ -50,10 +51,10 @@
   {% for e in exercises %}
   <tr>
     <td>{{ numbers[e.id] }}</td>
-    <td><a href="#" class="exercise-note" data-note="{{ e.note|default('') }}">{{ e.name }}</a></td>
+    <td><a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ e.name }}</a></td>
     <td>{{ e.muscle_group }}</td>
     <td>
-      <a href="{{ url_for('edit_exercise', eid=e.id) }}" class="button-link">編集</a>
+      <a href="#" data-id="{{ e.id }}" class="button-link edit-exercise">編集</a>
       <form method="post" style="display:inline">
         <input type="hidden" name="delete_id" value="{{ e.id }}">
         <button type="submit" onclick="return confirm('本当にこの種目を削除しますか？')">削除</button>
