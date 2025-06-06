@@ -54,6 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // ------- エクササイズ管理フィルター即時反映 -------
+  var exerciseManageForm = document.querySelector('form[method="get"]');
+  if(exerciseManageForm){
+    var sortSelect = exerciseManageForm.querySelector('select[name="sort"]');
+    var muscleSelectManage = exerciseManageForm.querySelector('select[name="muscle"]');
+    function submitManage(){
+      exerciseManageForm.submit();
+    }
+    if(sortSelect){ sortSelect.addEventListener('change', submitManage); }
+    if(muscleSelectManage){ muscleSelectManage.addEventListener('change', submitManage); }
+  }
+
   // ------- 行の追加 -------
   var addEntryBtn = document.getElementById('addEntry');
   var entriesDiv = document.getElementById('entries');
@@ -171,9 +183,9 @@ document.addEventListener('DOMContentLoaded', function() {
           if(!data.length){
             modalBody.innerHTML = '<p>記録がありません。</p>';
           }else{
-            var html = '<table><tr><th>種目</th><th>部位</th><th>セット</th><th>回数</th><th>重量</th></tr>';
+            var html = '<table><tr><th>種目</th><th>部位</th><th>セット</th><th>回数</th><th>重量</th><th>強度</th></tr>';
             data.forEach(function(row){
-              html += '<tr><td>'+row.name+'</td><td>'+row.muscle_group+'</td><td>'+row.sets+'</td><td>'+row.reps+'</td><td>'+row.weight+'</td></tr>';
+              html += '<tr><td>'+row.name+'</td><td>'+row.muscle_group+'</td><td>'+row.sets+'</td><td>'+row.reps+'</td><td>'+row.weight+'</td><td>'+(row.intensity || '')+'</td></tr>';
             });
             html += '</table>';
             modalBody.innerHTML = '<h3>'+date+'</h3>' + html;

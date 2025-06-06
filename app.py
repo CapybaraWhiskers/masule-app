@@ -347,7 +347,7 @@ def day_data(date):
     """指定日のトレーニングデータをJSONで返す"""
     conn = get_db_connection()
     rows = conn.execute('''
-        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
+        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight, w.intensity
         FROM workouts w
         JOIN exercises e ON w.exercise_id = e.id
         WHERE w.date = ?
@@ -361,7 +361,7 @@ def day_detail(date):
     """1日の詳細ページ"""
     conn = get_db_connection()
     rows = conn.execute('''
-        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight
+        SELECT w.date, e.name, e.muscle_group, w.sets, w.reps, w.weight, w.intensity
         FROM workouts w
         JOIN exercises e ON w.exercise_id = e.id
         WHERE w.date = ?
