@@ -20,22 +20,26 @@
   {% for week in days %}
   <!-- 1週間分の行 -->
   <tr>
-      {% for day in week %}
-      <!-- 各日のセル -->
-      {% set date_str = day.strftime('%Y-%m-%d') %}
-      <td class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}" data-date="{{ date_str }}">
-        <div class="date-number"><a href="#" class="day-link">{{ day.day }}</a></div>
-        {% set day_events = events.get(date_str, []) %}
-        {% if day_events %}
-        <!-- その日の種目一覧 -->
-        <ul class="events">
-          {% for name in day_events %}
-          <li class="{% if name == '胸' %}bg-chest{% elif name == '背中' %}bg-back{% elif name == '脚' %}bg-legs{% elif name == '肩' %}bg-shoulders{% elif name == '腕' %}bg-arms{% elif name == '腹' %}bg-core{% else %}bg-default{% endif %}">{{ name }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </td>
-      {% endfor %}
+    {% for day in week %}
+    <!-- 各日のセル -->
+    {% set date_str = day.strftime('%Y-%m-%d') %}
+    <td
+      class="{% if day.month != month %}other-month {% endif %}{% if day == today %}today {% endif %}{% if events.get(date_str) %}has-event{% endif %}"
+      data-date="{{ date_str }}">
+      <div class="date-number"><a href="#" class="day-link">{{ day.day }}</a></div>
+      {% set day_events = events.get(date_str, []) %}
+      {% if day_events %}
+      <!-- その日の種目一覧 -->
+      <ul class="events">
+        {% for name in day_events %}
+        <li
+          class="{% if name == '胸' %}bg-chest{% elif name == '背中' %}bg-back{% elif name == '脚' %}bg-legs{% elif name == '肩' %}bg-shoulders{% elif name == '腕' %}bg-arms{% elif name == '腹' %}bg-core{% else %}bg-default{% endif %}">
+          {{ name }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </td>
+    {% endfor %}
   </tr>
   {% endfor %}
 </table>
