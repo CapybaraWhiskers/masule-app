@@ -14,7 +14,8 @@
           <select name="exercise_id" class="exercise-select" required>
             <option value="" selected disabled>選択せよ</option>
             {% for e in exercises %}
-              <option value="{{ e.id }}" data-sets="{{ e.default_sets }}" data-reps="{{ e.default_reps }}" data-weight="{{ e.default_weight }}">{{ e.name }}（{{ e.muscle_group }}）</option>
+            <option value="{{ e.id }}" data-sets="{{ e.default_sets }}" data-reps="{{ e.default_reps }}"
+              data-weight="{{ e.default_weight }}">{{ e.name }}（{{ e.muscle_group }}）</option>
             {% endfor %}
           </select>
         </td>
@@ -28,15 +29,15 @@
         <td><input type="number" name="reps" value="10" required></td>
       </tr>
       <tr>
-        <td>重量(kg)：</td>
-        <td><input type="number" name="weight" step="0.1" value="0" required></td>
+        <td>片手重量(kg)：</td>
+        <td><input type="number" name="weight" step="0.5" value="0" required></td>
       </tr>
       <tr>
         <td>強度：</td>
         <td>
           <select name="intensity">
-            <option value="高い">高い</option>
-            <option value="心地よい" selected>心地よい</option>
+            <option value="高">高</option>
+            <option value="良" selected>良</option>
             <option value="低">低</option>
           </select>
         </td>
@@ -49,4 +50,3 @@
   </div>
   <button type="submit">記録</button>
 </form>
-
