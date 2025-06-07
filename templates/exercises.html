@@ -1,46 +1,24 @@
 {% extends 'base.html' %}
-{% block title %}エクササイズ管理{% endblock %}
+{% block title %}種目管理{% endblock %}
 {% block content %}
-<h1>エクササイズ管理</h1>
-<h2><button type="button" id="toggleForm">新しいエクササイズを追加</button></h2>
-<!-- 追加フォームは最初非表示 -->
-<div id="exerciseForm" style="display:none;">
-  <form method="post">
-    名前：<input type="text" name="name" required>
-    部位：
-    <select name="muscle_group">
-      <option>胸</option>
-      <option>背中</option>
-      <option>脚</option>
-      <option>肩</option>
-      <option>腕</option>
-      <option>腹</option>
-    </select>
-    メモ：<input type="text" name="memo">
-    動画URL：<input type="text" name="video_url">
-    セット数デフォルト：<input type="number" name="default_sets" min="1">
-    回数デフォルト：<input type="number" name="default_reps" min="1">
-    重量デフォルト(kg)：<input type="number" name="default_weight" step="0.1">
-    <button type="submit">追加</button>
-    <button type="button" id="cancelAdd">キャンセル</button>
-  </form>
-</div>
-
+<h1>種目管理</h1>
+<h2><button type="button" class="record" id="openAddExerciseModal">新しい種目を追加</button></h2>
+<!-- モーダル用種目追加フォーム -->
 <form method="get" style="margin-top: 10px;">
   並び順：
   <select name="sort">
-    <option value="new" {% if sort == 'new' %}selected{% endif %}>新しい順</option>
-    <option value="old" {% if sort == 'old' %}selected{% endif %}>古い順</option>
+    <option value="new" {% if sort=='new' %}selected{% endif %}>新しい順</option>
+    <option value="old" {% if sort=='old' %}selected{% endif %}>古い順</option>
   </select>
   部位フィルター：
   <select name="muscle">
     <option value="" {% if not muscle %}selected{% endif %}>全て</option>
-    <option value="胸" {% if muscle == '胸' %}selected{% endif %}>胸</option>
-    <option value="背中" {% if muscle == '背中' %}selected{% endif %}>背中</option>
-    <option value="脚" {% if muscle == '脚' %}selected{% endif %}>脚</option>
-    <option value="肩" {% if muscle == '肩' %}selected{% endif %}>肩</option>
-    <option value="腕" {% if muscle == '腕' %}selected{% endif %}>腕</option>
-    <option value="腹" {% if muscle == '腹' %}selected{% endif %}>腹</option>
+    <option value="胸" {% if muscle=='胸' %}selected{% endif %}>胸</option>
+    <option value="背中" {% if muscle=='背中' %}selected{% endif %}>背中</option>
+    <option value="脚" {% if muscle=='脚' %}selected{% endif %}>脚</option>
+    <option value="肩" {% if muscle=='肩' %}selected{% endif %}>肩</option>
+    <option value="腕" {% if muscle=='腕' %}selected{% endif %}>腕</option>
+    <option value="腹" {% if muscle=='腹' %}selected{% endif %}>腹</option>
   </select>
   <button type="submit">適用</button>
 </form>
@@ -53,11 +31,12 @@
     <th>操作</th>
   </tr>
   {% for e in exercises %}
-  <!-- 各エクササイズの行 -->
+  <!-- 各種目の行 -->
   <tr>
     <td>
       <!-- メモや動画URLをモーダルで表示 -->
-      <a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}" data-video="{{ e.video_url|default('') }}">{{ numbers[e.id] }}</a>
+      <a href="#" class="exercise-note" data-memo="{{ e.memo|default('') }}"
+        data-video="{{ e.video_url|default('') }}">{{ numbers[e.id] }}</a>
     </td>
     <td>{{ e.name }}</td>
     <td>{{ e.muscle_group }}</td>
