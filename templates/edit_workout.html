@@ -15,7 +15,8 @@
         <!-- 種目を選択 -->
         <select name="exercise_id">
           {% for e in exercises %}
-            <option value="{{ e.id }}" {% if e.id == workout.exercise_id %}selected{% endif %}>{{ e.name }}（{{ e.muscle_group }}）</option>
+          <option value="{{ e.id }}" {% if e.id==workout.exercise_id %}selected{% endif %}>{{ e.name }}（{{
+            e.muscle_group }}）</option>
           {% endfor %}
         </select>
       </td>
@@ -29,16 +30,16 @@
       <td><input type="number" name="reps" value="{{ workout.reps }}" required></td>
     </tr>
     <tr>
-      <td>重量(kg)：</td>
-      <td><input type="number" name="weight" step="0.1" value="{{ workout.weight }}" required></td>
+      <td>片手重量(kg)：</td>
+      <td><input type="number" name="weight" step="0.5" value="{{ workout.weight }}" required></td>
     </tr>
     <tr>
       <td>強度：</td>
       <td>
         <select name="intensity">
-          <option value="高い" {% if workout.intensity == '高い' %}selected{% endif %}>高い</option>
-          <option value="心地よい" {% if workout.intensity == '心地よい' %}selected{% endif %}>心地よい</option>
-          <option value="低" {% if workout.intensity == '低' %}selected{% endif %}>低</option>
+          <option value="高" {% if workout.intensity=='高' %}selected{% endif %}>高</option>
+          <option value="良" {% if workout.intensity=='良' %}selected{% endif %}>良</option>
+          <option value="低" {% if workout.intensity=='低' %}selected{% endif %}>低</option>
         </select>
       </td>
     </tr>
