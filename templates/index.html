@@ -3,8 +3,8 @@
 {% block content %}
 <h1>トレーニング履歴</h1>
 <!-- 記録追加用モーダルを開くボタン -->
-<button type="button" id="openLogModal">記録</button>
-
+<button type="button" class="record" id="openLogModal">記録</button>
+<p></p>
 <!-- 表示フィルター -->
 <label for="muscleFilter">部位フィルター:</label>
 <select id="muscleFilter">
@@ -20,7 +20,7 @@
 <select id="exerciseFilter">
   <option value="">全て</option>
   {% for ex in exercises %}
-    <option value="{{ ex.name }}">{{ ex.name }}</option>
+  <option value="{{ ex.name }}">{{ ex.name }}</option>
   {% endfor %}
 </select>
 
@@ -34,22 +34,24 @@
       <th>部位</th>
       <th>セット</th>
       <th>回数</th>
-      <th>重量(kg)</th>
+      <th>片手重量(kg)</th>
       <th>強度</th>
       <th>操作</th>
     </tr>
   </thead>
   <tbody>
-  {% for w in workouts %}
-  <!-- 行の色を部位ごとに変更 -->
-  <tr class="data-row {% if w.muscle_group == '胸' %}bg-chest{% elif w.muscle_group == '背中' %}bg-back{% elif w.muscle_group == '脚' %}bg-legs{% elif w.muscle_group == '肩' %}bg-shoulders{% elif w.muscle_group == '腕' %}bg-arms{% elif w.muscle_group == '腹' %}bg-core{% else %}bg-default{% endif %}" data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}">
-    <td>{{ w.date_short }}</td>
-    <td><a href="#" class="exercise-filter-link">{{ w.exercise }}</a></td>
-    <td>{{ w.muscle_group }}</td>
-    <td>{{ w.sets }}</td>
-    <td>{{ w.reps }}</td>
-    <td>{{ w.weight }}</td>
-    <td>{{ w.intensity }}</td>
+    {% for w in workouts %}
+    <!-- 行の色を部位ごとに変更 -->
+    <tr
+      class="data-row {% if w.muscle_group == '胸' %}bg-chest{% elif w.muscle_group == '背中' %}bg-back{% elif w.muscle_group == '脚' %}bg-legs{% elif w.muscle_group == '肩' %}bg-shoulders{% elif w.muscle_group == '腕' %}bg-arms{% elif w.muscle_group == '腹' %}bg-core{% else %}bg-default{% endif %}"
+      data-muscle="{{ w.muscle_group }}" data-exercise="{{ w.exercise }}">
+      <td>{{ w.date_short }}</td>
+      <td><a href="#" class="exercise-filter-link">{{ w.exercise }}</a></td>
+      <td>{{ w.muscle_group }}</td>
+      <td>{{ w.sets }}</td>
+      <td>{{ w.reps }}</td>
+      <td>{{ w.weight }}</td>
+      <td>{{ w.intensity }}</td>
       <td>
         <!-- 編集ボタンはモーダルでフォームを開く -->
         <a href="#" class="button-link edit-workout" data-id="{{ w.id }}">編集</a>
@@ -57,9 +59,9 @@
           <button type="submit" onclick="return confirm('本当にこのログを削除しますか？')">削除</button>
         </form>
       </td>
-  </tr>
-  {% endfor %}
-</tbody>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% else %}
 <!-- ログが無い場合のメッセージ -->
