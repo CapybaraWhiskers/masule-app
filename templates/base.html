@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <!-- 全ページ共通のテンプレート -->
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}筋トレアプリ{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
   <!-- ナビゲーションメニュー -->
   <nav>
     <a href="{{ url_for('index') }}">履歴</a> |
     <a href="{{ url_for('calendar_view') }}">カレンダー</a> |
-    <a href="{{ url_for('exercises') }}">エクササイズ管理</a>
+    <a href="{{ url_for('exercises') }}">種目管理</a>
   </nav>
   <hr>
   {% block content %}{% endblock %}
@@ -25,4 +27,5 @@
   <!-- JavaScript 読み込み -->
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
