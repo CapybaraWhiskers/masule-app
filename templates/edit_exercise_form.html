@@ -1,5 +1,5 @@
-<h1>エクササイズを編集</h1>
-<!-- モーダル用エクササイズ編集フォーム -->
+<h1>種目を編集</h1>
+<!-- モーダル用種目編集フォーム -->
 <form method="post" id="editExerciseForm">
   <table>
     <tr>
@@ -11,12 +11,12 @@
       <td>
         <!-- 部位を選択 -->
         <select name="muscle_group">
-          <option value="胸" {% if exercise.muscle_group == '胸' %}selected{% endif %}>胸</option>
-          <option value="背中" {% if exercise.muscle_group == '背中' %}selected{% endif %}>背中</option>
-          <option value="脚" {% if exercise.muscle_group == '脚' %}selected{% endif %}>脚</option>
-          <option value="肩" {% if exercise.muscle_group == '肩' %}selected{% endif %}>肩</option>
-          <option value="腕" {% if exercise.muscle_group == '腕' %}selected{% endif %}>腕</option>
-          <option value="腹" {% if exercise.muscle_group == '腹' %}selected{% endif %}>腹</option>
+          <option value="胸" {% if exercise.muscle_group=='胸' %}selected{% endif %}>胸</option>
+          <option value="背中" {% if exercise.muscle_group=='背中' %}selected{% endif %}>背中</option>
+          <option value="脚" {% if exercise.muscle_group=='脚' %}selected{% endif %}>脚</option>
+          <option value="肩" {% if exercise.muscle_group=='肩' %}selected{% endif %}>肩</option>
+          <option value="腕" {% if exercise.muscle_group=='腕' %}selected{% endif %}>腕</option>
+          <option value="腹" {% if exercise.muscle_group=='腹' %}selected{% endif %}>腹</option>
         </select>
       </td>
     </tr>
@@ -29,16 +29,16 @@
       <td><input type="text" name="video_url" value="{{ exercise.video_url }}"></td>
     </tr>
     <tr>
-      <td>セット数デフォルト：</td>
+      <td>セット数：</td>
       <td><input type="number" name="default_sets" value="{{ exercise.default_sets }}" min="1"></td>
     </tr>
     <tr>
-      <td>回数デフォルト：</td>
+      <td>回数：</td>
       <td><input type="number" name="default_reps" value="{{ exercise.default_reps }}" min="1"></td>
     </tr>
     <tr>
-      <td>重量デフォルト(kg)：</td>
-      <td><input type="number" name="default_weight" value="{{ exercise.default_weight }}" step="0.1"></td>
+      <td>片手重量(kg)：</td>
+      <td><input type="number" name="default_weight" value="{{ exercise.default_weight }}" step="0.5"></td>
     </tr>
   </table>
   <button type="submit">更新</button>
