@@ -4,6 +4,7 @@ from datetime import datetime
 import calendar
 from flask import jsonify
 import os
+import sys
 
 # -----------------------------
 # Flask アプリの設定
@@ -104,7 +105,10 @@ def index():
         # 日付を短い形式に変換（失敗したらそのまま）
         try:
             dt = datetime.strptime(w['date'], '%Y-%m-%d')
-            w['date_short'] = dt.strftime('%-m/%-d')
+            if sys.platform.startswith('win'):
+                w['date_short'] = dt.strftime('%#m/%#d')
+            else:
+                w['date_short'] = dt.strftime('%-m/%-d')
         except Exception:
             w['date_short'] = w['date']
     return render_template('index.html', workouts=workout_list, exercises=exercises)
@@ -156,7 +160,7 @@ def delete_workout(wid):
 
 @app.route('/edit_exercise/<int:eid>', methods=['GET', 'POST'])
 def edit_exercise(eid):
-    """エクササイズ情報を編集"""
+    """種目情報を編集"""
     conn = get_db_connection()
     if request.method == 'POST':
         name = request.form['name'].strip()
@@ -194,15 +198,20 @@ def edit_exercise(eid):
 
 @app.route('/edit_exercise_form/<int:eid>')
 def edit_exercise_form(eid):
-    """エクササイズ編集フォームのみを返す"""
+    """種目編集フォームのみを返す"""
     conn = get_db_connection()
     exercise = conn.execute('SELECT * FROM exercises WHERE id=?', (eid,)).fetchone()
     conn.close()
     return render_template('edit_exercise_form.html', exercise=exercise)
 
+@app.route('/add_exercise_form')
+def add_exercise_form():
+    """種目追加フォームのみを返す"""
+    return render_template('add_exercise_form.html')
+
 @app.route('/exercises', methods=['GET', 'POST'])
 def exercises():
-    """エクササイズ一覧および追加・削除画面"""
+    """種目一覧および追加・削除画面"""
     conn = get_db_connection()
     if request.method == 'POST':
         # 新規登録 or 削除判定
@@ -213,7 +222,7 @@ def exercises():
             conn.close()
             return redirect(url_for('exercises'))
 
-        # 新規エクササイズ追加
+        # 新規種目追加
         name = request.form['name'].strip()
         muscle = request.form['muscle_group']
         memo = request.form.get('memo', '').strip()
@@ -256,7 +265,7 @@ def exercises():
         query += ' ORDER BY id DESC'
 
     rows = conn.execute(query, params).fetchall()
-    # 番号付け用に全エクササイズを古い順で取得
+    # 番号付け用に全種目を古い順で取得
     all_rows = conn.execute('SELECT id FROM exercises ORDER BY id ASC').fetchall()
     number_map = {r['id']: idx + 1 for idx, r in enumerate(all_rows)}
     conn.close()
@@ -336,10 +345,7 @@ def calendar_view():
         next_month = month + 1
         next_year = year
 
-    return render_template('calendar.html', events=events, days=month_days,
-                           year=year, month=month, today=today,
-                           prev_year=prev_year, prev_month=prev_month,
-                           next_year=next_year, next_month=next_month)
+    return render_template('calendar.html', events=events, days=month_days, year=year, month=month, today=today, prev_year=prev_year, prev_month=prev_month, next_year=next_year, next_month=next_month)
 
 
 @app.route('/day_data/<date>')
